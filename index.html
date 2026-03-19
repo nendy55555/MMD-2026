@@ -479,70 +479,6 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
 .tteam-row.winner .tteam-abbr{color:var(--text);}
 .tteam-row.loser .tteam-abbr{opacity:.55;}
 
-/* ═══ ROUND BANNER ═══ */
-.round-banner{
-  background:linear-gradient(135deg,rgba(251,191,36,.10) 0%,rgba(251,191,36,.04) 50%,rgba(96,165,250,.07) 100%);
-  border-bottom:1px solid rgba(251,191,36,.22);
-  padding:13px 20px;
-  display:flex;align-items:center;justify-content:center;gap:16px;
-  flex-wrap:wrap;
-  position:relative;overflow:hidden;
-}
-.round-banner::before{
-  content:'';position:absolute;inset:0;
-  background:repeating-linear-gradient(
-    90deg,
-    transparent,transparent 60px,
-    rgba(251,191,36,.025) 60px,rgba(251,191,36,.025) 61px
-  );
-  pointer-events:none;
-}
-.rb-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.35);
-  border-radius:24px;padding:5px 16px;
-  font-size:.8rem;font-weight:800;letter-spacing:.04em;color:var(--gold);
-  text-transform:uppercase;position:relative;z-index:1;
-}
-.rb-live-dot{
-  width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;
-  box-shadow:0 0 8px rgba(34,197,94,.7);
-  animation:sdotpulse 1.6s infinite;
-}
-.rb-title{
-  font-size:1.4rem;font-weight:900;letter-spacing:-.02em;
-  color:var(--text);position:relative;z-index:1;
-}
-.rb-title span{color:var(--gold);}
-.rb-dates{
-  font-size:.72rem;color:var(--text2);font-weight:500;
-  background:rgba(255,255,255,.04);border:1px solid var(--border);
-  border-radius:10px;padding:4px 12px;position:relative;z-index:1;
-}
-.rb-games{
-  font-size:.7rem;font-weight:700;font-family:'JetBrains Mono',monospace;
-  color:var(--blue);background:rgba(96,165,250,.08);
-  border:1px solid rgba(96,165,250,.2);
-  border-radius:10px;padding:4px 12px;position:relative;z-index:1;
-}
-.round-banner.r32{
-  background:linear-gradient(135deg,rgba(96,165,250,.09) 0%,rgba(96,165,250,.03) 100%);
-  border-bottom-color:rgba(96,165,250,.22);
-}
-.round-banner.r32 .rb-pill{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.35);color:var(--blue);}
-.round-banner.r32 .rb-title span{color:var(--blue);}
-.round-banner.s16{
-  background:linear-gradient(135deg,rgba(167,139,250,.09) 0%,rgba(167,139,250,.03) 100%);
-  border-bottom-color:rgba(167,139,250,.25);
-}
-.round-banner.s16 .rb-pill{background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.35);color:#a78bfa;}
-.round-banner.s16 .rb-title span{color:#a78bfa;}
-@media(max-width:600px){
-  .round-banner{padding:10px 14px;gap:10px;}
-  .rb-title{font-size:1.1rem;}
-  .rb-pill{font-size:.68rem;padding:4px 12px;}
-  .rb-dates,.rb-games{font-size:.62rem;padding:3px 10px;}
-}
 
 /* ═══ RESPONSIVE ═══ */
 
@@ -765,8 +701,6 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
   <button class="rbtn" id="rBtn" onclick="forceRefresh()">↻ Refresh</button>
 </div>
 
-<!-- Round Banner -->
-<div id="roundBanner" class="round-banner" style="display:none"></div>
 
 <div class="main">
 
@@ -1778,62 +1712,6 @@ function renderTicker() {
   }).join('');
 }
 
-// ── RENDER: ROUND BANNER ──────────────────────────────────────
-function renderRoundBanner() {
-  const el = document.getElementById('roundBanner');
-  if (!el) return;
-
-  const now = new Date();
-
-  // Priority: live → today → nearest upcoming → highest completed
-  const roundIdxNow = (() => {
-    if (!allGames.length) return 1;
-
-    const live = allGames.filter(g => g.status === 'STATUS_IN_PROGRESS');
-    if (live.length) return live[0].roundIdx;
-
-    const today = allGames.filter(g => new Date(g.date).toDateString() === now.toDateString());
-    if (today.length) return Math.min(...today.map(g => g.roundIdx));
-
-    const upcoming = allGames
-      .filter(g => g.status === 'STATUS_SCHEDULED' && new Date(g.date) > now)
-      .sort((a, b) => new Date(a.date) - new Date(b.date));
-    if (upcoming.length) return upcoming[0].roundIdx;
-
-    const done = allGames.filter(g => g.status === 'STATUS_FINAL');
-    if (done.length) return Math.max(...done.map(g => g.roundIdx));
-
-    return 1;
-  })();
-
-  const roundGames  = allGames.filter(g => g.roundIdx === roundIdxNow);
-  const liveCount   = roundGames.filter(g => g.status === 'STATUS_IN_PROGRESS').length;
-  const todayR      = roundGames.filter(g => new Date(g.date).toDateString() === now.toDateString());
-  const todayDone   = todayR.filter(g => g.status === 'STATUS_FINAL').length;
-  const totalDone   = roundGames.filter(g => g.status === 'STATUS_FINAL').length;
-
-  const gamesLabel = liveCount > 0
-    ? `${liveCount} game${liveCount !== 1 ? 's' : ''} live`
-    : todayR.length > 0
-      ? `${todayDone}/${todayR.length} today`
-      : `${totalDone}/${roundGames.length} complete`;
-
-  const roundName = ROUND_NAMES[roundIdxNow] || 'Tournament';
-  const roundDate = ROUND_DATES[roundIdxNow] || '';
-  const cls = roundIdxNow === 2 ? 'r32' : roundIdxNow >= 3 ? 's16' : '';
-
-  el.className = `round-banner${cls ? ' ' + cls : ''}`;
-  el.style.display = 'flex';
-  el.innerHTML = `
-    <div class="rb-pill">
-      ${liveCount > 0 ? '<span class="rb-live-dot"></span>' : '🏀'}
-      ${liveCount > 0 ? 'LIVE' : 'NOW'}
-    </div>
-    <div class="rb-title"><span>${roundName}</span></div>
-    ${roundDate ? `<div class="rb-dates">📅 ${roundDate}</div>` : ''}
-    <div class="rb-games">${gamesLabel}</div>
-  `;
-}
 
 // ── RENDER: LEADERBOARD ───────────────────────────────────────
 function renderLeaderboard() {
@@ -2137,7 +2015,6 @@ async function forceRefresh() {
     await fetchAllTournament();
     const hasLive = todayGames.some(g=>g.status==='STATUS_IN_PROGRESS');
     renderProgress();
-    renderRoundBanner();
     renderTicker();
     renderLeaderboard();
     renderSBC();
