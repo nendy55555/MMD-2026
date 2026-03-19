@@ -1734,19 +1734,24 @@ function renderTicker() {
       </div>`;
     }).join('');
 
-    // Win probability bar for live games
+    // Win probability bar for live games — uses each team's actual color
     let wpHtml = '';
     if (isLive) {
       const t0wp = getWinPct(g.teams[0]?.name);
       const t1wp = getWinPct(g.teams[1]?.name);
       if (t0wp !== null && t1wp !== null) {
-        const c0 = wpColor(t0wp), c1 = wpColor(t1wp);
+        const c0 = teamMeta[g.teams[0].name]?.color || getTeamColor(g.teams[0].name) || '#60a5fa';
+        const c1 = teamMeta[g.teams[1].name]?.color || getTeamColor(g.teams[1].name) || '#f87171';
+        const pct0 = Math.round(t0wp * 100);
+        const pct1 = 100 - pct0;
         wpHtml = `<div class="wp-bar-wrap">
           <div class="wp-label-row">
-            <span style="color:${c0}">${g.teams[0].abbr} ${Math.round(t0wp*100)}%</span>
-            <span style="color:${c1}">${g.teams[1].abbr} ${Math.round(t1wp*100)}%</span>
+            <span style="color:${c0};font-weight:700">${g.teams[0].abbr} ${pct0}%</span>
+            <span style="color:${c1};font-weight:700">${g.teams[1].abbr} ${pct1}%</span>
           </div>
-          <div class="wp-bar"><div class="wp-fill" style="width:${t0wp*100}%;background:${c0}"></div></div>
+          <div class="wp-bar" style="background:${c1}44">
+            <div class="wp-fill" style="width:${pct0}%;background:${c0}"></div>
+          </div>
         </div>`;
       }
     }
@@ -1773,53 +1778,51 @@ function renderTicker() {
   }).join('');
 }
 
-/// ── RENDER: ROUND BANNER ──────────────────────────────────────
+// ── RENDER: ROUND BANNER ──────────────────────────────────────
 function renderRoundBanner() {
   const el = document.getElementById('roundBanner');
   if (!el) return;
 
-  // Determine active round index from games
+  const now = new Date();
+
+  // Priority: live → today → nearest upcoming → highest completed
   const roundIdxNow = (() => {
-    if (allGames.length === 0) return 1; // default R64
+    if (!allGames.length) return 1;
+
     const live = allGames.filter(g => g.status === 'STATUS_IN_PROGRESS');
     if (live.length) return live[0].roundIdx;
-    const today = allGames.filter(g => {
-      const d = new Date(g.date);
-      const now = new Date();
-      return d.toDateString() === now.toDateString();
-    });
-    if (today.length) return today[0].roundIdx;
-    const upcoming = allGames.filter(g => g.status === 'STATUS_SCHEDULED');
+
+    const today = allGames.filter(g => new Date(g.date).toDateString() === now.toDateString());
+    if (today.length) return Math.min(...today.map(g => g.roundIdx));
+
+    const upcoming = allGames
+      .filter(g => g.status === 'STATUS_SCHEDULED' && new Date(g.date) > now)
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
     if (upcoming.length) return upcoming[0].roundIdx;
-    // fallback: highest completed round
+
     const done = allGames.filter(g => g.status === 'STATUS_FINAL');
     if (done.length) return Math.max(...done.map(g => g.roundIdx));
+
     return 1;
   })();
 
-  const roundName = ROUND_NAMES[roundIdxNow] || 'Tournament';
-  const roundDate = ROUND_DATES[roundIdxNow] || '';
-
-  const liveCount  = allGames.filter(g => g.status === 'STATUS_IN_PROGRESS').length;
-  const todayTotal = allGames.filter(g => {
-    const d = new Date(g.date);
-    return d.toDateString() === new Date().toDateString();
-  }).length;
-  const todayDone  = allGames.filter(g => {
-    const d = new Date(g.date);
-    return d.toDateString() === new Date().toDateString() && g.status === 'STATUS_FINAL';
-  }).length;
+  const roundGames  = allGames.filter(g => g.roundIdx === roundIdxNow);
+  const liveCount   = roundGames.filter(g => g.status === 'STATUS_IN_PROGRESS').length;
+  const todayR      = roundGames.filter(g => new Date(g.date).toDateString() === now.toDateString());
+  const todayDone   = todayR.filter(g => g.status === 'STATUS_FINAL').length;
+  const totalDone   = roundGames.filter(g => g.status === 'STATUS_FINAL').length;
 
   const gamesLabel = liveCount > 0
-    ? `${liveCount} game${liveCount!==1?'s':''} live`
-    : todayTotal > 0
-      ? `${todayDone}/${todayTotal} today`
-      : `${allGames.filter(g=>g.roundIdx===roundIdxNow&&g.status==='STATUS_FINAL').length} of ${allGames.filter(g=>g.roundIdx===roundIdxNow).length} complete`;
+    ? `${liveCount} game${liveCount !== 1 ? 's' : ''} live`
+    : todayR.length > 0
+      ? `${todayDone}/${todayR.length} today`
+      : `${totalDone}/${roundGames.length} complete`;
 
-  // Color class per round
+  const roundName = ROUND_NAMES[roundIdxNow] || 'Tournament';
+  const roundDate = ROUND_DATES[roundIdxNow] || '';
   const cls = roundIdxNow === 2 ? 'r32' : roundIdxNow >= 3 ? 's16' : '';
 
-  el.className = `round-banner${cls?' '+cls:''}`;
+  el.className = `round-banner${cls ? ' ' + cls : ''}`;
   el.style.display = 'flex';
   el.innerHTML = `
     <div class="rb-pill">
