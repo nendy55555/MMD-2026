@@ -133,6 +133,15 @@ a{color:var(--blue);text-decoration:none;}
   margin:-10px -12px 8px -12px;
   text-shadow:none;
 }
+.madness-banner{
+  background:linear-gradient(90deg,#0f7a3a,#1db954,#0f7a3a);
+  color:#fff;font-size:.56rem;font-weight:900;text-transform:uppercase;
+  letter-spacing:.12em;text-align:center;padding:4px 12px;
+  margin:-10px -12px 8px -12px;
+  text-shadow:0 1px 3px rgba(0,0,0,.3);
+  animation:madness-pulse 1.2s ease-in-out infinite;
+}
+@keyframes madness-pulse{0%,100%{opacity:1;}50%{opacity:.75;}}
 .tcard-hdr-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
 .tcard-date{font-size:.58rem;color:var(--text3);opacity:.7;font-family:'JetBrains Mono',monospace;}
 .net-badge{font-size:.5rem;font-weight:900;letter-spacing:.06em;padding:2px 6px;border-radius:4px;white-space:nowrap;text-transform:uppercase;line-height:1.5;}
@@ -1797,6 +1806,16 @@ function renderTicker() {
       ? `<div class="calling-it-banner">🔥 Calling It</div>`
       : '';
 
+    // Madness Alert: live, 2nd half or OT, within 6, under 5 minutes left
+    const clockParts = (g.clock || '').split(':');
+    const clockMins = clockParts.length >= 2
+      ? parseInt(clockParts[0] || 0) + parseInt(clockParts[1] || 0) / 60
+      : 99;
+    const isMadness = isLive && !isHalftime && (g.period || 0) >= 2 && clockMins < 5 && scoreDiff <= 6;
+    const madnessBanner = isMadness
+      ? `<div class="madness-banner">🚨 Madness Alert</div>`
+      : '';
+
     // Network badge
     const netKey = (g.network||'').toLowerCase().replace(/\s+/g,'');
     const netClass = {
@@ -1808,7 +1827,7 @@ function renderTicker() {
       : '';
 
     return `<div class="tcard ${isLive?'live':isUp?'upcoming':''}">
-      ${callingItBanner}
+      ${madnessBanner}${callingItBanner}
       <div class="tcard-hdr-row">
         <div class="tcard-date">${dateLabel}</div>
         ${netBadge}
