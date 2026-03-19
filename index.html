@@ -1761,7 +1761,7 @@ function renderTicker() {
     if (isDone)           status = 'FINAL';
     else if (isHalftime)  status = 'HALFTIME';
     else if (isLive)      status = `${g.clock||''} ${g.period ? g.period+'H' : ''}`.trim() || 'LIVE';
-    else             status = `${timeLabel} ET`;
+    else             status = `${timeLabel} PT`;
 
     const teamRows = g.teams.map(t => {
       const owner      = findOwner(t.name);
