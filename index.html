@@ -41,7 +41,9 @@ a{color:var(--blue);text-decoration:none;}
   content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg,transparent,rgba(251,191,36,0.25),transparent);
 }
-.hdr-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 20px;}
+.hdr-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.hdr-center{flex:1;text-align:center;}
+.hdr-side-img{width:150px;height:150px;object-fit:cover;object-position:top center;border-radius:14px;flex-shrink:0;box-shadow:0 6px 24px rgba(0,0,0,.45);}
 .hdr-icon{font-size:2.2rem;margin-bottom:6px;filter:drop-shadow(0 0 14px rgba(251,191,36,0.35));}
 .hdr h1{
   font-size:2.4rem;font-weight:900;letter-spacing:-0.04em;margin-bottom:5px;
@@ -504,6 +506,7 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
   .hdr h1{font-size:1.6rem;letter-spacing:-.03em;}
   .hdr-icon{font-size:1.6rem;margin-bottom:4px;}
   .hdr-sub{font-size:.66rem;margin-bottom:9px;}
+  .hdr-side-img{width:90px;height:90px;border-radius:10px;}
   .hdr-badges{gap:6px;}
   .badge{font-size:.62rem;padding:3px 9px;}
 
@@ -691,13 +694,17 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
     <line class="bl" x1="1412" y1="152" x2="1412" y2="174"/>
   </svg>
   <div class="hdr-inner">
-    <div class="hdr-icon">🏀</div>
-    <h1>BRACKET BOYZ</h1>
-    <div class="hdr-sub">March Madness Snake Draft Tracker</div>
-    <div class="hdr-badges">
-      <span class="badge gold">2026 NCAA Tournament</span>
-      <span class="badge">8 Players · Snake Draft</span>
+    <img class="hdr-side-img" src="cleveland.jpg" alt="Cleveland">
+    <div class="hdr-center">
+      <div class="hdr-icon">🏀</div>
+      <h1>BRACKET BOYZ</h1>
+      <div class="hdr-sub">March Madness Snake Draft Tracker</div>
+      <div class="hdr-badges">
+        <span class="badge gold">2026 NCAA Tournament</span>
+        <span class="badge">8 Players · Snake Draft</span>
+      </div>
     </div>
+    <img class="hdr-side-img" src="shaman.jpg" alt="Shaman">
   </div>
 </div>
 
