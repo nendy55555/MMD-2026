@@ -120,11 +120,17 @@ a{color:var(--blue);text-decoration:none;}
 .tcard{
   background:var(--bg3);border:1px solid var(--border);border-radius:10px;
   padding:10px 12px;min-width:210px;flex-shrink:0;scroll-snap-align:start;
-  position:relative;
+  position:relative;overflow:hidden;
 }
 .tcard.live{border-color:rgba(34,197,94,.45);box-shadow:0 0 12px rgba(34,197,94,.07);}
 .tcard.upcoming{opacity:.75;}
-.tcard-round{font-size:.55rem;color:var(--text3);font-weight:600;text-transform:uppercase;margin-bottom:2px;}
+.calling-it-banner{
+  background:linear-gradient(90deg,#c8881f,#f5a623,#c8881f);
+  color:#1a1a2e;font-size:.56rem;font-weight:900;text-transform:uppercase;
+  letter-spacing:.12em;text-align:center;padding:4px 12px;
+  margin:-10px -12px 8px -12px;
+  text-shadow:none;
+}
 .tcard-date{font-size:.58rem;color:var(--text3);opacity:.7;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
 .tteam-row{
   display:flex;justify-content:space-between;align-items:center;
@@ -1747,8 +1753,15 @@ function renderTicker() {
       </div>`;
     }
 
+    const scores = g.teams.map(t => t.score || 0);
+    const scoreDiff = Math.abs(scores[0] - scores[1]);
+    const isCallingIt = (isLive || (isDone && !isUp)) && scoreDiff >= 14;
+    const callingItBanner = isCallingIt
+      ? `<div class="calling-it-banner">🔥 Calling It</div>`
+      : '';
+
     return `<div class="tcard ${isLive?'live':isUp?'upcoming':''}">
-      <div class="tcard-round">${ROUND_NAMES[g.roundIdx]||''}</div>
+      ${callingItBanner}
       <div class="tcard-date">${dateLabel}</div>
       ${teamRows}
       ${oddsHtml}
