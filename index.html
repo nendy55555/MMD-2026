@@ -1803,7 +1803,7 @@ function renderTicker() {
     const scoreDiff = Math.abs(scores[0] - scores[1]);
     const isCallingIt = (isLive || (isDone && !isUp)) && scoreDiff >= 14;
     const callingItBanner = isCallingIt
-      ? `<div class="calling-it-banner">🎯 Calling It 🎯</div>`
+      ? `<div class="calling-it-banner">💀 Calling It 💀</div>`
       : '';
 
     // Madness Alert: live, 2nd half or OT, within 6, under 5 minutes left
