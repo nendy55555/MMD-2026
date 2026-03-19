@@ -847,6 +847,7 @@ const OVERRIDES = {
   'tcu':['tcu','horned frog'], 'vcu':['vcu','virginia commonwealth'],
   'byu':['byu','brigham'], 'ucla':['ucla'],
   'liu':['liu','long island'], 'uconn':['uconn','connecticut husk'],
+  'michigan':['wolverine','michigan wolverines'],
   'iowa state':['iowa st','cyclone'], 'michigan state':['michigan st','spartan'],
   'ohio state':['ohio st','buckeye'], 'utah state':['utah st'],
   'saint louis':['saint louis','billik'],'santa clara':['santa clara','bronco'],
@@ -891,13 +892,19 @@ function matchTeam(draft, espnDisplay) {
 
   // ── Word-boundary includes ─────────────────────────────────────
   // Allows "gonzaga" to match "gonzaga bulldogs" but NOT "kansas" → "arkansas"
-  // (because 'k' before "kansas" in "arkansas" is not a word boundary)
+  // Also guards against "michigan" matching "michigan state spartans":
+  // if a school-qualifier word immediately follows the matched needle, reject.
   const wordIn = (hay, needle) => {
     const i = hay.indexOf(needle);
     if (i < 0) return false;
     const pre  = i === 0 || /\W/.test(hay[i - 1]);
     const post = i + needle.length >= hay.length || /\W/.test(hay[i + needle.length]);
-    return pre && post;
+    if (!pre || !post) return false;
+    // Guard: if a school-qualifier word immediately follows the needle, reject.
+    // e.g. "michigan state spartans" → remainder "state spartans" starts with "state" → false
+    const remainder = hay.slice(i + needle.length).trim();
+    if (/^(state|tech|a&m|southern|northern|eastern|western|central|christian|st\.?)\b/i.test(remainder)) return false;
+    return true;
   };
   if (wordIn(e, d) || wordIn(d, e)) return true;
 
