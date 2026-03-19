@@ -1967,7 +1967,7 @@ function renderDraftCards() {
   const players = Object.entries(DRAFT).map(([name,d]) => ({
     name, wins:getPlayerWins(name), rings:d.rings, ci:d.ci,
     teams:d.teams, career:getCareerPts(name)
-  })).sort((a,b)=>b.wins-a.wins||b.career-a.career);
+  })).sort((a,b)=>a.ci-b.ci);  // draft order: Pedraam→Paul→Rudger→Harrison→Gabe→Andrew→Thomas→Carson
 
   el.innerHTML = players.map((p,i) => {
     const color = COLORS[p.ci];
