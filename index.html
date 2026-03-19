@@ -133,7 +133,16 @@ a{color:var(--blue);text-decoration:none;}
   margin:-10px -12px 8px -12px;
   text-shadow:none;
 }
-.tcard-date{font-size:.58rem;color:var(--text3);opacity:.7;margin-bottom:5px;font-family:'JetBrains Mono',monospace;}
+.tcard-hdr-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.tcard-date{font-size:.58rem;color:var(--text3);opacity:.7;font-family:'JetBrains Mono',monospace;}
+.net-badge{font-size:.5rem;font-weight:900;letter-spacing:.06em;padding:2px 6px;border-radius:4px;white-space:nowrap;text-transform:uppercase;line-height:1.5;}
+.net-cbs   {background:#003893;color:#fff;}
+.net-tbs   {background:#0083be;color:#fff;}
+.net-trutv {background:#e4002b;color:#fff;}
+.net-tnt   {background:#f1a81e;color:#1a1a2e;}
+.net-espn  {background:#cc0000;color:#fff;}
+.net-espn2 {background:#cc0000;color:#fff;}
+.net-default{background:rgba(255,255,255,.18);color:#fff;}
 .tteam-row{
   display:flex;justify-content:space-between;align-items:center;
   padding:3px 0;font-size:.77rem;
@@ -1383,6 +1392,13 @@ async function fetchAllTournament() {
           oddsOU   = consensusOdds.overUnder || null; // e.g. 146.5
         }
 
+        // Extract national TV broadcaster from geoBroadcasts
+        const geoBroadcasts = comp.geoBroadcasts || [];
+        const natl = geoBroadcasts.find(b =>
+          (b.market?.type || '').toLowerCase() === 'national'
+        ) || geoBroadcasts[0];
+        const network = natl?.media?.shortName || null;
+
         const game = {
           id: ev.id,
           name: ev.name,
@@ -1393,7 +1409,7 @@ async function fetchAllTournament() {
           clock: ev.status?.displayClock,
           period: ev.status?.period,
           notes, roundIdx, isFF, isMain,
-          oddsLine, oddsOU,
+          oddsLine, oddsOU, network,
           teams: competitors.map(c => ({
             name: c.team?.displayName || '',
             abbr: c.team?.abbreviation || '',
@@ -1781,9 +1797,22 @@ function renderTicker() {
       ? `<div class="calling-it-banner">🔥 Calling It</div>`
       : '';
 
+    // Network badge
+    const netKey = (g.network||'').toLowerCase().replace(/\s+/g,'');
+    const netClass = {
+      'cbs':'net-cbs','tbs':'net-tbs','trutv':'net-trutv','tnt':'net-tnt',
+      'espn':'net-espn','espn2':'net-espn2'
+    }[netKey] || (g.network ? 'net-default' : '');
+    const netBadge = g.network
+      ? `<span class="net-badge ${netClass}">${g.network}</span>`
+      : '';
+
     return `<div class="tcard ${isLive?'live':isUp?'upcoming':''}">
       ${callingItBanner}
-      <div class="tcard-date">${dateLabel}</div>
+      <div class="tcard-hdr-row">
+        <div class="tcard-date">${dateLabel}</div>
+        ${netBadge}
+      </div>
       ${teamRows}
       ${oddsHtml}
       ${wpHtml}
