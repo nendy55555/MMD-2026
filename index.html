@@ -816,6 +816,7 @@ const OVERRIDES = {
   'byu':['byu','brigham'], 'ucla':['ucla'],
   'liu':['liu','long island'], 'uconn':['uconn','connecticut husk'],
   'michigan':['wolverine','michigan wolverines'],
+  'hawaii':["hawai'i",'rainbow warrior'],
   'iowa state':['iowa st','cyclone'], 'michigan state':['michigan st','spartan'],
   'ohio state':['ohio st','buckeye'], 'utah state':['utah st'],
   'saint louis':['saint louis','billik'],'santa clara':['santa clara','bronco'],
@@ -828,8 +829,11 @@ const OVERRIDES = {
 const SCHOOL_QUALIFIER_RE = /\s+(state|tech|a&m|southern|northern|eastern|western|central|christian|st\.?)$/i;
 
 function matchTeam(draft, espnDisplay) {
-  const d = draft.toLowerCase().trim();
-  const e = espnDisplay.toLowerCase().trim();
+  // Normalize Hawaiian ʻokina (U+02BB) and modifier apostrophe (U+02BC) → regular apostrophe
+  // so ESPN's "Hawaiʻi Rainbow Warriors" normalizes to "hawai'i rainbow warriors"
+  const normalize = s => s.replace(/[\u02BB\u02BC]/g, "'").toLowerCase().trim();
+  const d = normalize(draft);
+  const e = normalize(espnDisplay);
   if (e === d) return true;
 
   // ── OVERRIDES first — explicit alias mappings always win ──────
