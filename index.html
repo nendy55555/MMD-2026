@@ -833,18 +833,18 @@ const espnNameMap = {}; // draftName → espnDisplayName
 const teamMeta = {};    // espnDisplayName → { color, altColor, logo, abbr }
 
 const OVERRIDES = {
-  "st. john's":['john',"st. john's",'red storm'],
+  "st. john's":["st. john","st. john's",'red storm'],
   "saint mary's":["saint mary's","st. mary's",'gaels'],
   'miami (oh)':['miami (oh)','redhawk','miami oh'],
   'miami (fl)':['miami hurr','miami fl','miami (fl)'],
-  'nd state':['north dakota st','ndsu','bison','north dakota state'],
+  'nd state':['north dakota st','ndsu','north dakota state'],        // removed 'bison' — Howard's nickname
   'kennesaw st.':['kennesaw'], 'tennessee st.':['tennessee st','tsu'],
   'mcneese state':['mcneese'], 'wright state':['wright st'],
   'prairie view a&m':['prairie view'],
   'cal baptist':['california baptist','cal baptist'],
   'northern iowa':['northern iowa','uni panther'],
-  'texas a&m':['texas a&m','aggies'],
-  'north carolina':['north carolina','tar heel','unc '],
+  'texas a&m':['texas a&m'],                                         // removed 'aggies' — Utah St/NM St are also Aggies
+  'north carolina':['tar heel','unc tar heel'],                      // removed bare 'north carolina'/'unc ' — matches NC A&T etc.
   'ucf':['ucf','central florida'], 'usf':['usf','south florida'],
   'tcu':['tcu','horned frog'], 'vcu':['vcu','virginia commonwealth'],
   'byu':['byu','brigham'], 'ucla':['ucla'],
@@ -853,8 +853,9 @@ const OVERRIDES = {
   'hawaii':["hawai'i",'rainbow warrior'],
   'iowa state':['iowa st','cyclone'], 'michigan state':['michigan st','spartan'],
   'ohio state':['ohio st','buckeye'], 'utah state':['utah st'],
-  'saint louis':['saint louis','billik'],'santa clara':['santa clara','bronco'],
-  'houston':['houston cougars','houston'], 'gonzaga':['gonzaga'],
+  'saint louis':['saint louis','billik'],'santa clara':['santa clara'],  // removed 'bronco' — Boise State
+  'houston':['houston cougars'],                                     // removed bare 'houston' — Sam Houston
+  'gonzaga':['gonzaga'],
   'purdue':['purdue boilerm','purdue'],
 };
 
