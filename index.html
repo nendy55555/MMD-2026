@@ -1803,7 +1803,7 @@ function renderTicker() {
     const scoreDiff = Math.abs(scores[0] - scores[1]);
     const isCallingIt = (isLive || (isDone && !isUp)) && scoreDiff >= 14;
     const callingItBanner = isCallingIt
-      ? `<div class="calling-it-banner">🔥 Calling It</div>`
+      ? `<div class="calling-it-banner">🎯 Calling It 🎯</div>`
       : '';
 
     // Madness Alert: live, 2nd half or OT, within 6, under 5 minutes left
@@ -1813,7 +1813,7 @@ function renderTicker() {
       : 99;
     const isMadness = isLive && !isHalftime && (g.period || 0) >= 2 && clockMins < 5 && scoreDiff <= 6;
     const madnessBanner = isMadness
-      ? `<div class="madness-banner">🚨 Madness Alert</div>`
+      ? `<div class="madness-banner">🔥 Madness Alert 🔥</div>`
       : '';
 
     // Network badge
