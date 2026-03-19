@@ -868,10 +868,20 @@ function matchTeam(draft, espnDisplay) {
     const pre  = i === 0 || /\W/.test(hay[i - 1]);
     const post = i + needle.length >= hay.length || /\W/.test(hay[i + needle.length]);
     if (!pre || !post) return false;
-    // Guard: if a school-qualifier word immediately follows the needle, reject.
-    // e.g. "michigan state spartans" → remainder "state spartans" starts with "state" → false
+    // Guard: if a school-qualifier word immediately FOLLOWS the needle, reject.
+    // e.g. "michigan state spartans" → remainder "state spartans" → false
     const remainder = hay.slice(i + needle.length).trim();
     if (/^(state|tech|a&m|southern|northern|eastern|western|central|christian|st\.?)\b/i.test(remainder)) return false;
+    // Guard: if a geographic/directional word immediately PRECEDES the needle, reject.
+    // e.g. "south florida bulls" → last word before "florida" is "south" → false
+    // e.g. "northern iowa panthers" → last word before "iowa" is "northern" → false
+    // e.g. "south alabama jaguars" → last word before "alabama" is "south" → false
+    // e.g. "sam houston bearkats" → last word before "houston" is "sam" → false
+    if (i > 0) {
+      const precedingWords = hay.slice(0, i).trim().split(/\s+/);
+      const lastWord = precedingWords[precedingWords.length - 1] || '';
+      if (/^(south|north|east|west|central|mid|southern|northern|eastern|western|sam)$/i.test(lastWord)) return false;
+    }
     return true;
   };
   if (wordIn(e, d) || wordIn(d, e)) return true;
@@ -1521,7 +1531,7 @@ const LOGO_FALLBACKS = {
   'virginia':`${CDN}258.png`, 'alabama':`${CDN}333.png`,
   'texas tech':`${CDN}2641.png`, 'tennessee':`${CDN}2633.png`,
   'kentucky':`${CDN}96.png`, 'georgia':`${CDN}61.png`,
-  'saint louis':`${CDN}139.png`, 'santa clara':`${CDN}2608.png`,
+  'saint louis':`${CDN}139.png`, 'santa clara':`${CDN}279.png`,
   'miami (oh)':`${CDN}193.png`, 'akron':`${CDN}2006.png`,
   'hofstra':`${CDN}2259.png`, 'wright state':`${CDN}2750.png`,
   'tennessee st.':`${CDN}2994.png`, 'howard':`${CDN}2169.png`,
