@@ -1064,6 +1064,8 @@ const ROUND_MAP = {
   'final four':5,'semifinal':5,'national championship':6,'championship':6
 };
 const ROUND_NAMES = ['First Four','Round of 64','Round of 32','Sweet 16','Elite 8','Final Four','Championship'];
+// ESPN statuses that mean the game is currently in progress (includes halftime)
+const LIVE_STATUSES = new Set(['STATUS_IN_PROGRESS','STATUS_HALFTIME']);
 
 function isFirstFour(notes) {
   return notes.some(n => n.includes('first four'));
@@ -1399,7 +1401,7 @@ async function fetchAllTournament() {
               if (!teamAlive[t.name]) teamAlive[t.name] = false;
             }
           }
-        } else if (game.status === 'STATUS_IN_PROGRESS') {
+        } else if (LIVE_STATUSES.has(game.status)) {
           for (const t of game.teams) teamAlive[t.name] = true;
           liveGameIds.push(game.id);
         } else {
@@ -1670,13 +1672,13 @@ function renderTicker() {
   };
 
   // ORDER: 🔴 LIVE (least time remaining first) → 📅 UPCOMING TODAY → ✅ DONE TODAY → 📆 REST OF ROUND
-  const live         = allCandidates.filter(g =>  g.status === 'STATUS_IN_PROGRESS')
+  const live         = allCandidates.filter(g =>  LIVE_STATUSES.has(g.status))
                                     .sort((a,b) => clockSecsRemaining(a) - clockSecsRemaining(b));
-  const upToday      = allCandidates.filter(g => !g.completed && g.status !== 'STATUS_IN_PROGRESS' && isGameToday(g))
+  const upToday      = allCandidates.filter(g => !g.completed && !LIVE_STATUSES.has(g.status) && isGameToday(g))
                                     .sort((a,b) => new Date(a.date) - new Date(b.date));
   const doneToday    = allCandidates.filter(g =>  g.completed && isGameToday(g))
                                     .sort((a,b) => new Date(a.date) - new Date(b.date));
-  const laterRound   = allCandidates.filter(g => !g.completed && g.status !== 'STATUS_IN_PROGRESS' && !isGameToday(g));
+  const laterRound   = allCandidates.filter(g => !g.completed && !LIVE_STATUSES.has(g.status) && !isGameToday(g));
   const showGames    = [...live, ...upToday, ...doneToday, ...laterRound];
 
   if (showGames.length === 0) { ticker.style.display='none'; return; }
@@ -1684,7 +1686,8 @@ function renderTicker() {
   rLabel.textContent = ROUND_NAMES[getCurrentRoundIdx()];
 
   scroll.innerHTML = showGames.map(g => {
-    const isLive = g.status === 'STATUS_IN_PROGRESS';
+    const isLive     = LIVE_STATUSES.has(g.status);
+    const isHalftime = g.status === 'STATUS_HALFTIME';
     const isDone = g.completed;
     const isUp   = !isLive && !isDone;
 
@@ -1694,8 +1697,9 @@ function renderTicker() {
     const timeLabel = gameDate.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/New_York'});
 
     let status;
-    if (isDone)      status = 'FINAL';
-    else if (isLive) status = `${g.clock||''} ${g.period ? g.period+'H' : ''}`.trim() || 'LIVE';
+    if (isDone)           status = 'FINAL';
+    else if (isHalftime)  status = 'HALFTIME';
+    else if (isLive)      status = `${g.clock||''} ${g.period ? g.period+'H' : ''}`.trim() || 'LIVE';
     else             status = `${timeLabel} ET`;
 
     const teamRows = g.teams.map(t => {
@@ -2037,7 +2041,7 @@ function updateStatus(hasLive) {
   const txt = document.getElementById('sText');
   const upd = document.getElementById('sUpdate');
   const gp = document.getElementById('sGames');
-  const liveCount = todayGames.filter(g=>g.status==='STATUS_IN_PROGRESS').length;
+  const liveCount = todayGames.filter(g=>LIVE_STATUSES.has(g.status)).length;
 
   dot.className = `sdot ${hasLive?'live':'idle'}`;
   txt.textContent = hasLive ? `${liveCount} game${liveCount!==1?'s':''} live` :
@@ -2058,7 +2062,7 @@ async function forceRefresh() {
 
   try {
     await fetchAllTournament();
-    const hasLive = todayGames.some(g=>g.status==='STATUS_IN_PROGRESS');
+    const hasLive = todayGames.some(g=>LIVE_STATUSES.has(g.status));
     renderProgress();
     renderTicker();
     renderLeaderboard();
@@ -2079,7 +2083,7 @@ async function forceRefresh() {
 function scheduleRefresh() {
   const etHour = parseInt(new Date().toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',hour12:false}));
   if (etHour < 7 || etHour >= 24) return; // Sleep overnight
-  const hasLive = todayGames.some(g=>g.status==='STATUS_IN_PROGRESS');
+  const hasLive = todayGames.some(g=>LIVE_STATUSES.has(g.status));
   const delay = hasLive ? 60_000 : 120_000;
   setTimeout(async () => { await forceRefresh(); scheduleRefresh(); }, delay);
 }
