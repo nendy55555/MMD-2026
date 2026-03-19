@@ -464,6 +464,8 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
   50%{border-color:rgba(251,191,36,.7);}
 }
 .lbrow.lead{animation:leadShimmer 2.4s ease-in-out infinite;}
+/* When lead row also has .au fade-in, run both animations (they animate different props) */
+.lbrow.lead.au{animation:fadeUp .4s cubic-bezier(.25,.46,.45,.94) forwards, leadShimmer 2.4s .4s ease-in-out infinite;}
 
 /* ── Live game ticker card: pulsing green ring ──────────────── */
 @keyframes livePulse{
