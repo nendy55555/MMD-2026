@@ -781,7 +781,7 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
 </div>
 
 <div class="footer">
-  Bracket Boyz © 2026 · Live data via <a href="https://www.espn.com" target="_blank">ESPN API</a> · Updates every 60s during games · 8am–midnight ET auto-refresh
+  Bracket Boyz © 2026 · Live data via <a href="https://www.espn.com" target="_blank">ESPN API</a> · Updates every 60s during games · 7am–midnight PT auto-refresh
   <br style="margin-top:6px">
   <span style="opacity:.6">Free hosting: <a href="https://pages.github.com" target="_blank">GitHub Pages</a> · <a href="https://netlify.com/drop" target="_blank">Netlify Drop</a> · <a href="https://vercel.com" target="_blank">Vercel</a></span>
 </div>
@@ -1354,7 +1354,7 @@ async function fetchAllTournament() {
   totalCompleted = 0;
 
   // Use ET date (not UTC) — UTC rolls over at 5 PM PT, which would drop tonight's games
-  const _etFmt = d => d.toLocaleDateString('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+  const _etFmt = d => d.toLocaleDateString('en-US',{timeZone:'America/Los_Angeles',year:'numeric',month:'2-digit',day:'2-digit'});
   const _etToYMD = s => { const [m,d,y]=s.split('/'); return `${y}${m}${d}`; };
   const todayStr    = _etToYMD(_etFmt(new Date()));
   const tomorrowStr = _etToYMD(_etFmt(new Date(Date.now()+86400000)));
@@ -1663,7 +1663,7 @@ const ROUND_DATES = {
 //
 // Between rounds: shows the NEXT upcoming round so the banner is forward-looking.
 function getCurrentRoundIdx() {
-  const et = new Date(new Date().toLocaleString('en-US', {timeZone:'America/New_York'}));
+  const et = new Date(new Date().toLocaleString('en-US', {timeZone:'America/Los_Angeles'}));
   const m = et.getMonth() + 1, d = et.getDate();
   if (m === 3) {
     if (d <= 20) return 1;   // R64
@@ -1716,8 +1716,8 @@ function renderTicker() {
   }
 
   // Helper: is this game scheduled for today (ET)?
-  const todayStr = new Date().toLocaleDateString('en-US', {timeZone:'America/New_York'});
-  const isGameToday = g => new Date(g.date).toLocaleDateString('en-US',{timeZone:'America/New_York'}) === todayStr;
+  const todayStr = new Date().toLocaleDateString('en-US', {timeZone:'America/Los_Angeles'});
+  const isGameToday = g => new Date(g.date).toLocaleDateString('en-US',{timeZone:'America/Los_Angeles'}) === todayStr;
 
   // Helper: total seconds remaining in game (for sorting live games, least time = most urgent = leftmost)
   const clockSecsRemaining = g => {
@@ -2168,10 +2168,10 @@ async function forceRefresh() {
 }
 
 // ── AUTO-REFRESH ──────────────────────────────────────────────
-// 60s if games are live, 120s otherwise, off during 12am-7am ET
+// 60s if games are live, 120s otherwise, off during 12am-7am PT
 function scheduleRefresh() {
-  const etHour = parseInt(new Date().toLocaleString('en-US',{timeZone:'America/New_York',hour:'numeric',hour12:false}));
-  if (etHour < 7 || etHour >= 24) return; // Sleep overnight
+  const ptHour = parseInt(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',hour12:false}));
+  if (ptHour < 7 || ptHour >= 24) return; // Sleep overnight
   const hasLive = todayGames.some(g=>LIVE_STATUSES.has(g.status));
   const delay = hasLive ? 60_000 : 120_000;
   setTimeout(async () => { await forceRefresh(); scheduleRefresh(); }, delay);
