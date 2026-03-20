@@ -1353,10 +1353,11 @@ async function fetchAllTournament() {
   allGames = []; todayGames = []; upcomingGames = [];
   totalCompleted = 0;
 
-  const today = new Date();
-  const todayStr = today.toISOString().slice(0,10).replace(/-/g,'');
-  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate()+1);
-  const tomorrowStr = tomorrow.toISOString().slice(0,10).replace(/-/g,'');
+  // Use ET date (not UTC) — UTC rolls over at 5 PM PT, which would drop tonight's games
+  const _etFmt = d => d.toLocaleDateString('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'});
+  const _etToYMD = s => { const [m,d,y]=s.split('/'); return `${y}${m}${d}`; };
+  const todayStr    = _etToYMD(_etFmt(new Date()));
+  const tomorrowStr = _etToYMD(_etFmt(new Date(Date.now()+86400000)));
 
   // Fetch past dates + today + tomorrow (for upcoming)
   const pastDates = ALL_DATES.filter(d => d < todayStr);
