@@ -1906,7 +1906,7 @@ function renderLeaderboard() {
         ? `<span class="lb-gap">–${gapToLeader}</span>`
         : '';
 
-    const calledIt = !['Andrew','Carson','Rudger'].includes(p.name);
+    const calledIt = !['Andrew','Carson'].includes(p.name);
     const lbCallingIt = calledIt ? `<div class="calling-it-banner">💀 Calling It 💀</div>` : '';
     const delay = i*0.045;
     return `<div class="lbrow pc${p.ci} ${rankNum===1&&p.wins>0?'lead':''} au" style="animation-delay:${delay}s">
