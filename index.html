@@ -135,6 +135,9 @@ a{color:var(--blue);text-decoration:none;}
   margin:-10px -12px 8px -12px;
   text-shadow:none;
 }
+.lbrow .calling-it-banner{
+  grid-column:1/-1;margin:-11px -16px 4px -16px;border-radius:10px 10px 0 0;
+}
 .madness-banner{
   background:linear-gradient(90deg,#0f7a3a,#1db954,#0f7a3a);
   color:#fff;font-size:.56rem;font-weight:900;text-transform:uppercase;
@@ -1903,8 +1906,11 @@ function renderLeaderboard() {
         ? `<span class="lb-gap">–${gapToLeader}</span>`
         : '';
 
+    const calledIt = !['Andrew','Carson','Rudger'].includes(p.name);
+    const lbCallingIt = calledIt ? `<div class="calling-it-banner">💀 Calling It 💀</div>` : '';
     const delay = i*0.045;
     return `<div class="lbrow pc${p.ci} ${rankNum===1&&p.wins>0?'lead':''} au" style="animation-delay:${delay}s">
+      ${lbCallingIt}
       <div class="lbrank">${rankLabel}</div>
       <div class="lbinfo">
         <div class="lbname-row">
