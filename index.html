@@ -854,28 +854,29 @@ const HISTORY = {
 const HISTORICAL = {
   2024: {
     gamesPlayed: 63, champion: 'Pedraam',
+    // draftPos = pick position in that year's snake draft (1 = first overall)
     players: {
-      Pedraam: { ci:0, rings:1, teams:['UConn','Gonzaga','Washington St.','Texas','TCU','Morehead St.',"St. Peter's",'Oakland'],        wins:[6,2,1,1,0,0,0,1] },
-      Rudger:  { ci:2, rings:0, teams:['Houston','San Diego St.','New Mexico','Drake','Utah St.','NC State','Vermont','Grambling St.'], wins:[2,2,0,0,1,4,0,0] },
-      Andrew:  { ci:5, rings:0, teams:['Purdue','Duke','Michigan St.','Kansas','Nebraska','Grand Canyon','Akron','W Kentucky'],         wins:[5,3,1,1,0,1,0,0] },
-      Harrison:{ ci:3, rings:0, teams:['UNC','Marquette','BYU','Oregon','Nevada','Dayton','Colgate','Long Beach St.'],                  wins:[2,2,0,1,0,1,0,0] },
-      Gabe:    { ci:4, rings:0, teams:['Arizona','Creighton','Florida','Clemson','Mississippi St.','James Madison','UAB','Longwood'],    wins:[2,2,0,3,0,1,0,0] },
-      Paul:    { ci:1, rings:0, teams:['Tennessee','Auburn',"Saint Mary's",'Texas Tech','FAU','South Carolina','Duquesne','SD State'],  wins:[3,0,0,0,0,0,1,0] },
-      Carson:  { ci:7, rings:0, teams:['Iowa State','Baylor','Wisconsin','CSU','Colorado','Samford','Charleston','Stetson'],             wins:[2,1,0,0,1,0,0,0] },
-      Thomas:  { ci:6, rings:0, teams:['Kentucky','Illinois','Alabama','Texas A&M','McNeese St.','Northwestern','Yale','Wagner'],        wins:[0,3,4,1,0,1,1,0] },
+      Pedraam: { ci:0, rings:1, draftPos:1, teams:['UConn','Gonzaga','Washington St.','Texas','TCU','Morehead St.',"St. Peter's",'Oakland'],        wins:[6,2,1,1,0,0,0,1] },
+      Rudger:  { ci:2, rings:0, draftPos:2, teams:['Houston','San Diego St.','New Mexico','Drake','Utah St.','NC State','Vermont','Grambling St.'], wins:[2,2,0,0,1,4,0,0] },
+      Andrew:  { ci:5, rings:0, draftPos:3, teams:['Purdue','Duke','Michigan St.','Kansas','Nebraska','Grand Canyon','Akron','W Kentucky'],         wins:[5,3,1,1,0,1,0,0] },
+      Harrison:{ ci:3, rings:0, draftPos:4, teams:['UNC','Marquette','BYU','Oregon','Nevada','Dayton','Colgate','Long Beach St.'],                  wins:[2,2,0,1,0,1,0,0] },
+      Gabe:    { ci:4, rings:0, draftPos:5, teams:['Arizona','Creighton','Florida','Clemson','Mississippi St.','James Madison','UAB','Longwood'],    wins:[2,2,0,3,0,1,0,0] },
+      Paul:    { ci:1, rings:0, draftPos:6, teams:['Tennessee','Auburn',"Saint Mary's",'Texas Tech','FAU','South Carolina','Duquesne','SD State'],  wins:[3,0,0,0,0,0,1,0] },
+      Carson:  { ci:7, rings:0, draftPos:7, teams:['Iowa State','Baylor','Wisconsin','CSU','Colorado','Samford','Charleston','Stetson'],             wins:[2,1,0,0,1,0,0,0] },
+      Thomas:  { ci:6, rings:0, draftPos:8, teams:['Kentucky','Illinois','Alabama','Texas A&M','McNeese St.','Northwestern','Yale','Wagner'],        wins:[0,3,4,1,0,1,1,0] },
     }
   },
   2025: {
-    gamesPlayed: 62, champion: 'Pedraam',
+    gamesPlayed: 63, champion: 'Pedraam',  // 63 games (spreadsheet had 62 — one game uncounted)
     players: {
-      Pedraam: { ci:0, rings:2, teams:['Florida','Texas A&M','BYU','Ole Miss','Arkansas','McNeese',"Troy",'Wofford'],                   wins:[5,1,2,2,2,1,0,0] },
-      Rudger:  { ci:2, rings:0, teams:['Houston','Maryland','Oregon','Marquette','Drake','Xavier','Akron',"Mount St. Mary's"],          wins:[5,2,1,0,1,0,0,0] },
-      Andrew:  { ci:5, rings:0, teams:['Tennessee','Iowa St.','Gonzaga','UConn','Baylor','New Mexico','High Point','Alabama State'],    wins:[3,1,1,1,1,1,0,0] },
-      Carson:  { ci:7, rings:0, teams:['Duke','Kentucky','Missouri',"Saint Mary's",'Creighton','Liberty','Lipscomb','Robert Morris'],   wins:[4,2,0,1,1,0,0,0] },
-      Paul:    { ci:1, rings:0, teams:['Auburn','Purdue','Illinois','North Carolina','UC San Diego','Oklahoma','UNCW','Omaha'],          wins:[4,2,1,0,0,0,0,0] },
-      Thomas:  { ci:6, rings:0, teams:['Alabama','Arizona','Kansas','UCLA','Colorado St.','Yale','Montana','Bryant'],                   wins:[3,2,0,1,1,0,0,0] },
-      Gabe:    { ci:4, rings:0, teams:['Michigan St.','Texas Tech','Clemson','Mississippi St.','VCU','Utah St.','Georgia','SIUE'],       wins:[3,3,0,0,0,0,0,0] },
-      Harrison:{ ci:3, rings:0, teams:["St. John's",'Wisconsin','Michigan','Memphis','Louisville','Vanderbilt','Grand Canyon','Norfolk St.'], wins:[1,1,2,0,0,0,0,0] },
+      Carson:  { ci:7, rings:0, draftPos:1, teams:['Duke','Kentucky','Missouri',"Saint Mary's",'Creighton','Liberty','Lipscomb','Robert Morris'],    wins:[4,2,0,1,1,0,0,0] },
+      Paul:    { ci:1, rings:0, draftPos:2, teams:['Auburn','Purdue','Illinois','North Carolina','UC San Diego','Oklahoma','UNCW','Omaha'],           wins:[4,2,1,0,0,0,0,0] },
+      Pedraam: { ci:0, rings:2, draftPos:3, teams:['Florida','Texas A&M','BYU','Ole Miss','Arkansas','McNeese','Troy','Wofford'],                     wins:[5,1,2,2,2,1,0,0] },
+      Thomas:  { ci:6, rings:0, draftPos:4, teams:['Alabama','Arizona','Kansas','UCLA','Colorado St.','Yale','Montana','Bryant'],                     wins:[3,2,0,1,1,0,0,0] },
+      Rudger:  { ci:2, rings:0, draftPos:5, teams:['Houston','Maryland','Oregon','Marquette','Drake','Xavier','Akron',"Mount St. Mary's"],            wins:[5,2,1,0,1,0,0,0] },
+      Andrew:  { ci:5, rings:0, draftPos:6, teams:['Tennessee','Iowa St.','Gonzaga','UConn','Baylor','New Mexico','High Point','Alabama State'],      wins:[3,1,1,1,1,1,0,0] },
+      Harrison:{ ci:3, rings:0, draftPos:7, teams:["St. John's",'Wisconsin','Michigan','Memphis','Louisville','Vanderbilt','Grand Canyon','Norfolk St.'], wins:[1,1,2,0,0,0,0,0] },
+      Gabe:    { ci:4, rings:0, draftPos:8, teams:['Michigan St.','Texas Tech','Clemson','Mississippi St.','VCU','Utah St.','Georgia','SIUE'],         wins:[3,3,0,0,0,0,0,0] },
     }
   }
 };
@@ -2302,43 +2303,36 @@ function renderDraftCards() {
   if (activeYear !== 2026) {
     const hist = HISTORICAL[activeYear];
     const players = Object.entries(hist.players).map(([name,d]) => ({
-      name, ci:d.ci, rings:d.rings,
+      name, ci:d.ci, rings:d.rings, draftPos:d.draftPos||99,
       wins: d.wins.reduce((a,b)=>a+b,0),
       teams: d.teams, winsArr: d.wins,
       isChamp: name === hist.champion
-    })).sort((a,b)=>a.ci-b.ci);
+    })).sort((a,b)=>a.draftPos-b.draftPos);  // sort cards by that year's draft pick position
+
+    // Snake draft pick number: draftPos 1-8, round 1-8
+    const snakePickNum = (draftPos, round) =>
+      round % 2 === 1 ? (round-1)*8 + draftPos : round*8 + 1 - draftPos;
 
     el.innerHTML = players.map((p,i) => {
       const color = COLORS[p.ci];
 
-      // Sort teams: wins desc, but keep 0-win teams below
-      const indexed = p.teams.map((t,ti)=>({t,w:p.winsArr[ti]}));
-      const withWins = indexed.filter(x=>x.w>0).sort((a,b)=>b.w-a.w);
-      const noWins   = indexed.filter(x=>x.w===0);
-      const sorted   = [...withWins, ...noWins];
-
-      // Same row format as 2026 — logos + colors via HIST_TEAM_META fallback
-      const makeHistRow = (t, w) => {
-        const elimRow = (w === 0);
+      // Show all 8 picks in draft/round order (same row format as 2026, with pick badge)
+      const teamRows = p.teams.map((t, ti) => {
+        const w       = p.winsArr[ti];
+        const elim    = (w === 0);
         const logo    = getTeamLogo(t);
+        const seed    = null;  // no live seeds for historical
+        const pickNum = snakePickNum(p.draftPos, ti + 1);
         const logoImg = logo
           ? `<img class="dteam-logo" src="${logo}" loading="lazy" onerror="this.style.display='none'">`
           : '<div class="dteam-logo" style="opacity:0.2;background:#333;border-radius:3px"></div>';
-        return `<div class="dteam-row ${elimRow?'elim':''}">
+        const pickBadge = `<span class="dteam-pick">· Pick #${pickNum}</span>`;
+        return `<div class="dteam-row ${elim?'elim':''}">
           ${logoImg}
-          <span class="dteam-name">${t}</span>
-          <span class="dteam-wins" ${!elimRow&&w>0?'style="color:var(--green)"':''}>${w||''}</span>
+          <span class="dteam-name">${t}${pickBadge}</span>
+          <span class="dteam-wins" ${!elim&&w>0?'style="color:var(--green)"':''}>${w||''}</span>
         </div>`;
-      };
-
-      const aliveSection = withWins.length>0
-        ? `<div class="dteam-section-hdr" style="color:${color}88">Won Games (${withWins.length})</div>`
-          + withWins.map(({t,w}) => makeHistRow(t,w)).join('')
-        : '';
-      const elimSection = noWins.length>0
-        ? `<div class="dteam-section-hdr elim-hdr">Out (${noWins.length})</div>`
-          + noWins.map(({t}) => makeHistRow(t,0)).join('')
-        : '';
+      }).join('');
 
       return `<div class="dcard au" style="animation-delay:${i*.055}s">
         <div class="dcard-accent" style="background:linear-gradient(90deg,${color},transparent)"></div>
@@ -2349,13 +2343,13 @@ function renderDraftCards() {
               ${renderRings(p.rings)}
               ${p.isChamp?'<span style="font-size:.7rem;color:var(--gold);margin-left:2px">🏆</span>':''}
             </div>
-            <div class="dcard-career">${p.wins} pts · ${activeYear} season</div>
+            <div class="dcard-career">${p.wins} pts · Pick #${p.draftPos} overall · ${activeYear}</div>
           </div>
           <div class="dcard-hdr-right">
             <div class="dcard-score" style="color:${color}">${p.wins}</div>
           </div>
         </div>
-        <div class="dcard-teams">${aliveSection}${elimSection}</div>
+        <div class="dcard-teams">${teamRows}</div>
       </div>`;
     }).join('');
     return;
