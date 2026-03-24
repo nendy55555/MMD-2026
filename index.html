@@ -91,11 +91,15 @@ a{color:var(--blue);text-decoration:none;}
 .sec-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
 /* ═══ YEAR SELECTOR ═══ */
-.year-sel{display:flex;justify-content:center;gap:8px;margin:0 0 18px;flex-wrap:wrap;}
+.sec-lbl-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.sec-lbl-hdr .sec-lbl{margin-bottom:0;flex:0 0 auto;}
+.sec-lbl-hdr .sec-lbl::after{display:none;}  /* line handled by flex spacer below */
+.sec-lbl-hdr-line{flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.year-sel{display:flex;gap:6px;flex-wrap:wrap;flex:0 0 auto;}
 .year-btn{
   background:rgba(255,255,255,.05);border:1px solid var(--border);
-  color:var(--text2);font-size:.75rem;font-weight:700;padding:6px 20px;border-radius:20px;
-  cursor:pointer;font-family:inherit;letter-spacing:.06em;transition:all .2s;
+  color:var(--text2);font-size:.7rem;font-weight:700;padding:4px 14px;border-radius:16px;
+  cursor:pointer;font-family:inherit;letter-spacing:.06em;transition:all .2s;white-space:nowrap;
 }
 .year-btn:hover{background:rgba(255,255,255,.1);border-color:var(--border2);color:var(--text);}
 .year-btn.active{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.45);color:var(--gold);box-shadow:0 0 10px rgba(251,191,36,.1);}
@@ -774,11 +778,14 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
   </div>
 
   <!-- Year Selector + Leaderboard -->
-  <div class="sec-lbl"><span class="sec-lbl-icon">🏆</span> Standings</div>
-  <div class="year-sel" id="yearSel">
-    <button class="year-btn" onclick="switchYear(2024)">2024</button>
-    <button class="year-btn" onclick="switchYear(2025)">2025</button>
-    <button class="year-btn active" onclick="switchYear(2026)">2026</button>
+  <div class="sec-lbl-hdr">
+    <div class="sec-lbl"><span class="sec-lbl-icon">🏆</span> Standings</div>
+    <div class="sec-lbl-hdr-line"></div>
+    <div class="year-sel" id="yearSel">
+      <button class="year-btn" onclick="switchYear(2024)">2024</button>
+      <button class="year-btn" onclick="switchYear(2025)">2025</button>
+      <button class="year-btn active" onclick="switchYear(2026)">2026</button>
+    </div>
   </div>
   <div class="lboard reveal" id="lboard"></div>
 
@@ -1637,6 +1644,93 @@ const LOGO_FALLBACKS = {
   'miami (oh)':`${CDN}193.png`, 'akron':`${CDN}2006.png`,
   'hofstra':`${CDN}2259.png`, 'wright state':`${CDN}2750.png`,
   'tennessee st.':`${CDN}2994.png`, 'howard':`${CDN}2169.png`,
+  // ── Historical team logos (2024 / 2025) ──────────────────────
+  'washington st.':`${CDN}265.png`,  'morehead st.':`${CDN}2413.png`,
+  "st. peter's":`${CDN}2938.png`,    'oakland':`${CDN}2473.png`,
+  'san diego st.':`${CDN}21.png`,    'sd state':`${CDN}21.png`,
+  'new mexico':`${CDN}167.png`,      'drake':`${CDN}2181.png`,
+  'utah st.':`${CDN}328.png`,        'nc state':`${CDN}152.png`,
+  'vermont':`${CDN}261.png`,         'grambling st.':`${CDN}2755.png`,
+  'michigan st.':`${CDN}127.png`,    'grand canyon':`${CDN}2253.png`,
+  'w kentucky':`${CDN}98.png`,       'unc':`${CDN}153.png`,
+  'marquette':`${CDN}269.png`,       'oregon':`${CDN}2483.png`,
+  'nevada':`${CDN}2440.png`,         'dayton':`${CDN}2166.png`,
+  'colgate':`${CDN}2117.png`,        'long beach st.':`${CDN}2379.png`,
+  'creighton':`${CDN}156.png`,       'mississippi st.':`${CDN}344.png`,
+  'james madison':`${CDN}321.png`,   'uab':`${CDN}5.png`,
+  'longwood':`${CDN}2748.png`,       'auburn':`${CDN}2.png`,
+  'fau':`${CDN}2226.png`,            'south carolina':`${CDN}2579.png`,
+  'duquesne':`${CDN}2182.png`,       'baylor':`${CDN}239.png`,
+  'csu':`${CDN}36.png`,              'colorado':`${CDN}38.png`,
+  'samford':`${CDN}2565.png`,        'charleston':`${CDN}232.png`,
+  'stetson':`${CDN}2674.png`,        'northwestern':`${CDN}77.png`,
+  'yale':`${CDN}43.png`,             'wagner':`${CDN}2739.png`,
+  'mcneese st.':`${CDN}2377.png`,    'mcneese':`${CDN}2377.png`,
+  'ole miss':`${CDN}145.png`,        'wofford':`${CDN}2747.png`,
+  'maryland':`${CDN}120.png`,        'xavier':`${CDN}2752.png`,
+  "mount st. mary's":`${CDN}2386.png`, 'iowa st.':`${CDN}66.png`,
+  'high point':`${CDN}2743.png`,     'alabama state':`${CDN}2010.png`,
+  'liberty':`${CDN}2335.png`,        'lipscomb':`${CDN}2344.png`,
+  'robert morris':`${CDN}2523.png`,  'uc san diego':`${CDN}2602.png`,
+  'oklahoma':`${CDN}201.png`,        'uncw':`${CDN}350.png`,
+  'omaha':`${CDN}2437.png`,          'colorado st.':`${CDN}36.png`,
+  'montana':`${CDN}149.png`,         'bryant':`${CDN}2803.png`,
+  'siue':`${CDN}2567.png`,           'memphis':`${CDN}235.png`,
+  'norfolk st.':`${CDN}2453.png`,    'north carolina':`${CDN}153.png`,
+};
+
+// ── HISTORICAL TEAM META (color + abbr for 2024/2025 teams) ───
+// Used as final fallback when live teamMeta hasn't seen the team
+const HIST_TEAM_META = {
+  'uconn':{color:'#002868',abbr:'UCON'},'gonzaga':{color:'#002169',abbr:'GONZ'},
+  'washington st.':{color:'#981E32',abbr:'WSU'},'texas':{color:'#BF5700',abbr:'TEX'},
+  'tcu':{color:'#4D1979',abbr:'TCU'},'morehead st.':{color:'#002D62',abbr:'MORE'},
+  "st. peter's":{color:'#003087',abbr:'STP'},'oakland':{color:'#B5A36A',abbr:'OAK'},
+  'houston':{color:'#C8102E',abbr:'HOU'},'san diego st.':{color:'#A6192E',abbr:'SDSU'},
+  'sd state':{color:'#A6192E',abbr:'SDSU'},'new mexico':{color:'#BA0C2F',abbr:'UNM'},
+  'drake':{color:'#004B8D',abbr:'DRK'},'utah st.':{color:'#0F2439',abbr:'USU'},
+  'nc state':{color:'#CC0000',abbr:'NCST'},'vermont':{color:'#154733',abbr:'UVM'},
+  'grambling st.':{color:'#FFD700',abbr:'GRAM'},'purdue':{color:'#CFB991',abbr:'PUR'},
+  'duke':{color:'#003087',abbr:'DUKE'},'michigan st.':{color:'#18453B',abbr:'MSU'},
+  'kansas':{color:'#0051A5',abbr:'KU'},'nebraska':{color:'#E41C38',abbr:'NEB'},
+  'grand canyon':{color:'#522398',abbr:'GCU'},'akron':{color:'#041E42',abbr:'AKR'},
+  'w kentucky':{color:'#B00B20',abbr:'WKU'},'unc':{color:'#4B9CD3',abbr:'UNC'},
+  'marquette':{color:'#003366',abbr:'MU'},'byu':{color:'#002E5D',abbr:'BYU'},
+  'oregon':{color:'#154733',abbr:'ORE'},'nevada':{color:'#003366',abbr:'NEV'},
+  'dayton':{color:'#C8102E',abbr:'DAY'},'colgate':{color:'#821019',abbr:'COLG'},
+  'long beach st.':{color:'#FDBA31',abbr:'LBSU'},'arizona':{color:'#AB0520',abbr:'ARIZ'},
+  'creighton':{color:'#005CA9',abbr:'CRE'},'florida':{color:'#0021A5',abbr:'FLA'},
+  'clemson':{color:'#F66733',abbr:'CU'},'mississippi st.':{color:'#660000',abbr:'MSST'},
+  'james madison':{color:'#450084',abbr:'JMU'},'uab':{color:'#1E6B52',abbr:'UAB'},
+  'longwood':{color:'#003366',abbr:'LWD'},'tennessee':{color:'#FF8200',abbr:'TENN'},
+  'auburn':{color:'#E87722',abbr:'AUB'},"saint mary's":{color:'#8B2131',abbr:'SMC'},
+  'texas tech':{color:'#CC0000',abbr:'TTU'},'fau':{color:'#003366',abbr:'FAU'},
+  'south carolina':{color:'#73000A',abbr:'SC'},'duquesne':{color:'#003087',abbr:'DUQ'},
+  'iowa state':{color:'#C8102E',abbr:'ISU'},'iowa st.':{color:'#C8102E',abbr:'ISU'},
+  'baylor':{color:'#003015',abbr:'BAY'},'wisconsin':{color:'#C5050C',abbr:'WIS'},
+  'csu':{color:'#1E4D2B',abbr:'CSU'},'colorado':{color:'#CFB87C',abbr:'COLO'},
+  'samford':{color:'#003168',abbr:'SAM'},'charleston':{color:'#532D8E',abbr:'COFC'},
+  'stetson':{color:'#006747',abbr:'STET'},'northwestern':{color:'#4E2A84',abbr:'NW'},
+  'yale':{color:'#00356B',abbr:'YALE'},'wagner':{color:'#006747',abbr:'WAG'},
+  'kentucky':{color:'#0033A0',abbr:'UK'},'illinois':{color:'#E84A27',abbr:'ILL'},
+  'alabama':{color:'#9E1B32',abbr:'ALA'},'texas a&m':{color:'#500000',abbr:'TAMU'},
+  'mcneese st.':{color:'#046A38',abbr:'MCNE'},'mcneese':{color:'#046A38',abbr:'MCNE'},
+  'ole miss':{color:'#CE1126',abbr:'MISS'},'arkansas':{color:'#9D2235',abbr:'ARK'},
+  'troy':{color:'#8B2332',abbr:'TROY'},'wofford':{color:'#866D4B',abbr:'WOF'},
+  'maryland':{color:'#E03A3E',abbr:'MD'},'xavier':{color:'#0C2340',abbr:'XAV'},
+  "mount st. mary's":{color:'#005EB8',abbr:'MSM'},'high point':{color:'#4B0082',abbr:'HPU'},
+  'alabama state':{color:'#E31837',abbr:'ALST'},'missouri':{color:'#F1B82D',abbr:'MIZZ'},
+  'liberty':{color:'#002868',abbr:'LIB'},'lipscomb':{color:'#1B3C6D',abbr:'LIP'},
+  'robert morris':{color:'#003087',abbr:'RMU'},'uc san diego':{color:'#182B49',abbr:'UCSD'},
+  'oklahoma':{color:'#841617',abbr:'OKLA'},'uncw':{color:'#006666',abbr:'UNCW'},
+  'omaha':{color:'#CB2026',abbr:'UNO'},'colorado st.':{color:'#1E4D2B',abbr:'CSU'},
+  'montana':{color:'#72012F',abbr:'MONT'},'bryant':{color:'#5A0A28',abbr:'BRY'},
+  'siue':{color:'#E31837',abbr:'SIUE'},'memphis':{color:'#003087',abbr:'MEM'},
+  'norfolk st.':{color:'#005A02',abbr:'NSU'},'north carolina':{color:'#4B9CD3',abbr:'UNC'},
+  'vcu':{color:'#FDBB30',abbr:'VCU'},'georgia':{color:'#BA0C2F',abbr:'UGA'},
+  'michigan':{color:'#00274C',abbr:'MICH'},'louisville':{color:'#AD0000',abbr:'LOU'},
+  'vanderbilt':{color:'#866D4B',abbr:'VAN'},"st. john's":{color:'#CC0000',abbr:'SJU'},
+  'memphis':{color:'#003087',abbr:'MEM'},'michigan':{color:'#00274C',abbr:'MICH'},
 };
 
 function getTeamLogo(draftTeam) {
@@ -1655,13 +1749,19 @@ function getTeamLogo(draftTeam) {
 function getTeamColor(draftTeam) {
   for (const [en,m] of Object.entries(teamMeta))
     if (matchTeam(draftTeam,en)) return m.color;
+  // Fall back to historical team meta
+  const hm = HIST_TEAM_META[draftTeam.toLowerCase().trim()];
+  if (hm) return hm.color;
   return '#666';
 }
 
 function getTeamAbbr(draftTeam) {
   for (const [en,m] of Object.entries(teamMeta))
     if (matchTeam(draftTeam,en)) return m.abbr;
-  // Fallback abbr
+  // Fall back to historical team meta
+  const hm = HIST_TEAM_META[draftTeam.toLowerCase().trim()];
+  if (hm) return hm.abbr;
+  // Last-resort abbreviation from initials
   return draftTeam.split(' ').map(w=>w[0]).join('').slice(0,4).toUpperCase();
 }
 
@@ -1977,11 +2077,17 @@ function renderLeaderboard() {
       const rankNum   = rankStart+1;
       const rankLabel = tiedCount>1 ? `T${rankNum}` : `${rankNum}`;
 
+      // Same chip format as 2026 — using getTeamLogo / getTeamColor / getTeamAbbr with HIST_TEAM_META fallback
       const chips = p.teams.map((t,ti) => {
-        const w = p.winsArr[ti];
-        const abbr = t.length>9 ? t.slice(0,9) : t;
-        return `<div class="tc ${w===0?'elim':''}" style="background:rgba(255,255,255,${w>0?'.1':'.02'});border-color:rgba(255,255,255,${w>0?'.2':'.04'});color:${w>0?'#eee':'#555'}">
-          <div class="tc-abbr" style="font-size:.55rem">${abbr}</div>
+        const w     = p.winsArr[ti];
+        const elim  = (w === 0);
+        const logo  = getTeamLogo(t);
+        const color = getTeamColor(t);
+        const abbr  = getTeamAbbr(t);
+        const logoImg = logo ? `<img class="tc-logo" src="${logo}" onerror="this.style.display='none'" loading="lazy">` : '';
+        return `<div class="tc ${elim?'elim':''}" style="background:${color}22;border-color:${color}44;color:${elim?'#555':'#fff'}" title="${t}">
+          ${logoImg}
+          <div class="tc-abbr">${abbr}</div>
           ${w>0?`<div class="tc-wins">${w}</div>`:''}
         </div>`;
       }).join('');
@@ -2211,21 +2317,27 @@ function renderDraftCards() {
       const noWins   = indexed.filter(x=>x.w===0);
       const sorted   = [...withWins, ...noWins];
 
+      // Same row format as 2026 — logos + colors via HIST_TEAM_META fallback
+      const makeHistRow = (t, w) => {
+        const elimRow = (w === 0);
+        const logo    = getTeamLogo(t);
+        const logoImg = logo
+          ? `<img class="dteam-logo" src="${logo}" loading="lazy" onerror="this.style.display='none'">`
+          : '<div class="dteam-logo" style="opacity:0.2;background:#333;border-radius:3px"></div>';
+        return `<div class="dteam-row ${elimRow?'elim':''}">
+          ${logoImg}
+          <span class="dteam-name">${t}</span>
+          <span class="dteam-wins" ${!elimRow&&w>0?'style="color:var(--green)"':''}>${w||''}</span>
+        </div>`;
+      };
+
       const aliveSection = withWins.length>0
         ? `<div class="dteam-section-hdr" style="color:${color}88">Won Games (${withWins.length})</div>`
-          + withWins.map(({t,w})=>`<div class="dteam-row">
-              <div class="dteam-logo" style="background:#333;border-radius:3px;opacity:.3;flex-shrink:0;width:22px;height:22px"></div>
-              <span class="dteam-name">${t}</span>
-              <span class="dteam-wins" style="color:var(--green)">${w}</span>
-            </div>`).join('')
+          + withWins.map(({t,w}) => makeHistRow(t,w)).join('')
         : '';
       const elimSection = noWins.length>0
-        ? `<div class="dteam-section-hdr elim-hdr">Eliminated (${noWins.length})</div>`
-          + noWins.map(({t})=>`<div class="dteam-row elim">
-              <div class="dteam-logo" style="background:#333;border-radius:3px;opacity:.15;flex-shrink:0;width:22px;height:22px"></div>
-              <span class="dteam-name">${t}</span>
-              <span class="dteam-wins"></span>
-            </div>`).join('')
+        ? `<div class="dteam-section-hdr elim-hdr">Out (${noWins.length})</div>`
+          + noWins.map(({t}) => makeHistRow(t,0)).join('')
         : '';
 
       return `<div class="dcard au" style="animation-delay:${i*.055}s">
