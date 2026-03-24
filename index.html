@@ -90,6 +90,23 @@ a{color:var(--blue);text-decoration:none;}
 }
 .sec-lbl::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
 
+/* ═══ YEAR SELECTOR ═══ */
+.year-sel{display:flex;justify-content:center;gap:8px;margin:0 0 18px;flex-wrap:wrap;}
+.year-btn{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--text2);font-size:.75rem;font-weight:700;padding:6px 20px;border-radius:20px;
+  cursor:pointer;font-family:inherit;letter-spacing:.06em;transition:all .2s;
+}
+.year-btn:hover{background:rgba(255,255,255,.1);border-color:var(--border2);color:var(--text);}
+.year-btn.active{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.45);color:var(--gold);box-shadow:0 0 10px rgba(251,191,36,.1);}
+.champ-banner{
+  background:linear-gradient(135deg,rgba(251,191,36,.12),rgba(251,191,36,.04));
+  border:1px solid rgba(251,191,36,.3);border-radius:10px;
+  padding:12px 20px;text-align:center;font-size:.85rem;color:var(--text);
+  margin-bottom:14px;letter-spacing:.02em;
+}
+.champ-banner strong{color:var(--gold);}
+
 /* ═══ TOURNAMENT PROGRESS ═══ */
 .tprog{
   background:var(--bg3);border:1px solid var(--border);border-radius:12px;
@@ -756,13 +773,18 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
     <div class="ticker-scroll" id="tickerScroll"></div>
   </div>
 
-  <!-- Leaderboard -->
+  <!-- Year Selector + Leaderboard -->
   <div class="sec-lbl"><span class="sec-lbl-icon">🏆</span> Standings</div>
+  <div class="year-sel" id="yearSel">
+    <button class="year-btn" onclick="switchYear(2024)">2024</button>
+    <button class="year-btn" onclick="switchYear(2025)">2025</button>
+    <button class="year-btn active" onclick="switchYear(2026)">2026</button>
+  </div>
   <div class="lboard reveal" id="lboard"></div>
 
   <!-- Stacked Bar Chart -->
-  <div class="sec-lbl" style="margin-top:32px;"><span class="sec-lbl-icon">📊</span> Points by Team</div>
-  <div class="sbc reveal">
+  <div class="sec-lbl" id="sbcLabel" style="margin-top:32px;"><span class="sec-lbl-icon">📊</span> Points by Team</div>
+  <div class="sbc reveal" id="sbcWrap">
     <div class="sbc-title">Win Distribution by Player</div>
     <div id="sbcRows"></div>
   </div>
@@ -820,6 +842,38 @@ const HISTORY = {
   Harrison:{2024:6,2025:4}, Gabe:{2024:8,2025:6}, Andrew:{2024:11,2025:8},
   Thomas:{2024:10,2025:7}, Carson:{2024:4,2025:8}
 };
+
+// Full per-team historical data for year-switcher view
+const HISTORICAL = {
+  2024: {
+    gamesPlayed: 63, champion: 'Pedraam',
+    players: {
+      Pedraam: { ci:0, rings:1, teams:['UConn','Gonzaga','Washington St.','Texas','TCU','Morehead St.',"St. Peter's",'Oakland'],        wins:[6,2,1,1,0,0,0,1] },
+      Rudger:  { ci:2, rings:0, teams:['Houston','San Diego St.','New Mexico','Drake','Utah St.','NC State','Vermont','Grambling St.'], wins:[2,2,0,0,1,4,0,0] },
+      Andrew:  { ci:5, rings:0, teams:['Purdue','Duke','Michigan St.','Kansas','Nebraska','Grand Canyon','Akron','W Kentucky'],         wins:[5,3,1,1,0,1,0,0] },
+      Harrison:{ ci:3, rings:0, teams:['UNC','Marquette','BYU','Oregon','Nevada','Dayton','Colgate','Long Beach St.'],                  wins:[2,2,0,1,0,1,0,0] },
+      Gabe:    { ci:4, rings:0, teams:['Arizona','Creighton','Florida','Clemson','Mississippi St.','James Madison','UAB','Longwood'],    wins:[2,2,0,3,0,1,0,0] },
+      Paul:    { ci:1, rings:0, teams:['Tennessee','Auburn',"Saint Mary's",'Texas Tech','FAU','South Carolina','Duquesne','SD State'],  wins:[3,0,0,0,0,0,1,0] },
+      Carson:  { ci:7, rings:0, teams:['Iowa State','Baylor','Wisconsin','CSU','Colorado','Samford','Charleston','Stetson'],             wins:[2,1,0,0,1,0,0,0] },
+      Thomas:  { ci:6, rings:0, teams:['Kentucky','Illinois','Alabama','Texas A&M','McNeese St.','Northwestern','Yale','Wagner'],        wins:[0,3,4,1,0,1,1,0] },
+    }
+  },
+  2025: {
+    gamesPlayed: 62, champion: 'Pedraam',
+    players: {
+      Pedraam: { ci:0, rings:2, teams:['Florida','Texas A&M','BYU','Ole Miss','Arkansas','McNeese',"Troy",'Wofford'],                   wins:[5,1,2,2,2,1,0,0] },
+      Rudger:  { ci:2, rings:0, teams:['Houston','Maryland','Oregon','Marquette','Drake','Xavier','Akron',"Mount St. Mary's"],          wins:[5,2,1,0,1,0,0,0] },
+      Andrew:  { ci:5, rings:0, teams:['Tennessee','Iowa St.','Gonzaga','UConn','Baylor','New Mexico','High Point','Alabama State'],    wins:[3,1,1,1,1,1,0,0] },
+      Carson:  { ci:7, rings:0, teams:['Duke','Kentucky','Missouri',"Saint Mary's",'Creighton','Liberty','Lipscomb','Robert Morris'],   wins:[4,2,0,1,1,0,0,0] },
+      Paul:    { ci:1, rings:0, teams:['Auburn','Purdue','Illinois','North Carolina','UC San Diego','Oklahoma','UNCW','Omaha'],          wins:[4,2,1,0,0,0,0,0] },
+      Thomas:  { ci:6, rings:0, teams:['Alabama','Arizona','Kansas','UCLA','Colorado St.','Yale','Montana','Bryant'],                   wins:[3,2,0,1,1,0,0,0] },
+      Gabe:    { ci:4, rings:0, teams:['Michigan St.','Texas Tech','Clemson','Mississippi St.','VCU','Utah St.','Georgia','SIUE'],       wins:[3,3,0,0,0,0,0,0] },
+      Harrison:{ ci:3, rings:0, teams:["St. John's",'Wisconsin','Michigan','Memphis','Louisville','Vanderbilt','Grand Canyon','Norfolk St.'], wins:[1,1,2,0,0,0,0,0] },
+    }
+  }
+};
+
+let activeYear = 2026;
 const CHAMPS = {2024:'Pedraam',2025:'Pedraam'};
 
 // ── MOCK MODE ─────────────────────────────────────────────────
@@ -1853,9 +1907,112 @@ function renderTicker() {
 }
 
 
+// ── YEAR SWITCHER ─────────────────────────────────────────────
+function switchYear(year) {
+  activeYear = year;
+
+  // Update button active states
+  document.querySelectorAll('.year-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.textContent) === year);
+  });
+
+  const isLive = (year === 2026);
+
+  // Show/hide live-only sections
+  const tickerEl = document.getElementById('ticker');
+  if (tickerEl) tickerEl.style.display = isLive ? '' : 'none';
+
+  const tprogWrap = document.getElementById('tprog')?.parentElement;
+  if (tprogWrap) tprogWrap.style.display = isLive ? '' : 'none';
+
+  const sbcWrap = document.getElementById('sbcWrap');
+  if (sbcWrap) sbcWrap.style.display = isLive ? '' : 'none';
+  const sbcLbl = document.getElementById('sbcLabel');
+  if (sbcLbl) sbcLbl.style.display = isLive ? '' : 'none';
+
+  // Champion banner
+  let champEl = document.getElementById('champBanner');
+  if (!isLive) {
+    if (!champEl) {
+      champEl = document.createElement('div');
+      champEl.id = 'champBanner';
+      champEl.className = 'champ-banner';
+      const lboard = document.getElementById('lboard');
+      lboard.parentNode.insertBefore(champEl, lboard);
+    }
+    const champ = HISTORICAL[year].champion;
+    const gp = HISTORICAL[year].gamesPlayed;
+    champEl.innerHTML = `🏆 ${year} Champion: <strong>${champ}</strong> &nbsp;·&nbsp; ${gp} games played`;
+    champEl.style.display = '';
+  } else if (champEl) {
+    champEl.style.display = 'none';
+  }
+
+  renderLeaderboard();
+  renderDraftCards();
+
+  // Re-fetch live data when returning to 2026
+  if (isLive) fetchAllTournament();
+}
+
 // ── RENDER: LEADERBOARD ───────────────────────────────────────
 function renderLeaderboard() {
   const el = document.getElementById('lboard');
+
+  // ── Historical year view ───────────────────────────────────
+  if (activeYear !== 2026) {
+    const hist = HISTORICAL[activeYear];
+    const players = Object.entries(hist.players).map(([name,d]) => ({
+      name, ci:d.ci, rings:d.rings,
+      wins: d.wins.reduce((a,b)=>a+b,0),
+      teams: d.teams, winsArr: d.wins,
+      isChamp: name === hist.champion
+    })).sort((a,b)=>b.wins-a.wins);
+
+    const maxWins = Math.max(...players.map(p=>p.wins),1);
+
+    el.innerHTML = players.map((p,i) => {
+      const rankStart = players.findIndex(x=>x.wins===p.wins);
+      const tiedCount = players.filter(x=>x.wins===p.wins).length;
+      const rankNum   = rankStart+1;
+      const rankLabel = tiedCount>1 ? `T${rankNum}` : `${rankNum}`;
+
+      const chips = p.teams.map((t,ti) => {
+        const w = p.winsArr[ti];
+        const abbr = t.length>9 ? t.slice(0,9) : t;
+        return `<div class="tc ${w===0?'elim':''}" style="background:rgba(255,255,255,${w>0?'.1':'.02'});border-color:rgba(255,255,255,${w>0?'.2':'.04'});color:${w>0?'#eee':'#555'}">
+          <div class="tc-abbr" style="font-size:.55rem">${abbr}</div>
+          ${w>0?`<div class="tc-wins">${w}</div>`:''}
+        </div>`;
+      }).join('');
+
+      const gapToLeader = players[0].wins - p.wins;
+      const isLeader    = rankNum===1;
+      const gapHtml = p.isChamp
+        ? `<span class="lb-gap leading">🏆 CHAMP</span>`
+        : isLeader
+          ? `<span class="lb-gap leading">LEADER</span>`
+          : gapToLeader>0 ? `<span class="lb-gap">–${gapToLeader}</span>` : '';
+
+      const delay = i*0.045;
+      return `<div class="lbrow pc${p.ci} ${rankNum===1?'lead':''} au" style="animation-delay:${delay}s">
+        <div class="lbrank">${rankLabel}</div>
+        <div class="lbinfo">
+          <div class="lbname-row">
+            <span class="lbname">${p.name}</span>
+            ${renderRings(p.rings)}
+            ${gapHtml}
+          </div>
+          <div class="lbballs">${renderBalls(p.wins,maxWins)}</div>
+        </div>
+        <div class="team-chips">${chips}</div>
+        <div class="lbscore">${p.wins}</div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  // ── Live 2026 view ────────────────────────────────────────
   const players = Object.entries(DRAFT).map(([name,d]) => ({
     name, wins:getPlayerWins(name), rings:d.rings, ci:d.ci,
     career:getCareerPts(name), alive:getTeamsAlive(name), teams:d.teams,
@@ -2034,6 +2191,65 @@ function renderSBC() {
 // ── RENDER: DRAFT CARDS ───────────────────────────────────────
 function renderDraftCards() {
   const el = document.getElementById('dgrid');
+
+  // ── Historical year view ───────────────────────────────────
+  if (activeYear !== 2026) {
+    const hist = HISTORICAL[activeYear];
+    const players = Object.entries(hist.players).map(([name,d]) => ({
+      name, ci:d.ci, rings:d.rings,
+      wins: d.wins.reduce((a,b)=>a+b,0),
+      teams: d.teams, winsArr: d.wins,
+      isChamp: name === hist.champion
+    })).sort((a,b)=>a.ci-b.ci);
+
+    el.innerHTML = players.map((p,i) => {
+      const color = COLORS[p.ci];
+
+      // Sort teams: wins desc, but keep 0-win teams below
+      const indexed = p.teams.map((t,ti)=>({t,w:p.winsArr[ti]}));
+      const withWins = indexed.filter(x=>x.w>0).sort((a,b)=>b.w-a.w);
+      const noWins   = indexed.filter(x=>x.w===0);
+      const sorted   = [...withWins, ...noWins];
+
+      const aliveSection = withWins.length>0
+        ? `<div class="dteam-section-hdr" style="color:${color}88">Won Games (${withWins.length})</div>`
+          + withWins.map(({t,w})=>`<div class="dteam-row">
+              <div class="dteam-logo" style="background:#333;border-radius:3px;opacity:.3;flex-shrink:0;width:22px;height:22px"></div>
+              <span class="dteam-name">${t}</span>
+              <span class="dteam-wins" style="color:var(--green)">${w}</span>
+            </div>`).join('')
+        : '';
+      const elimSection = noWins.length>0
+        ? `<div class="dteam-section-hdr elim-hdr">Eliminated (${noWins.length})</div>`
+          + noWins.map(({t})=>`<div class="dteam-row elim">
+              <div class="dteam-logo" style="background:#333;border-radius:3px;opacity:.15;flex-shrink:0;width:22px;height:22px"></div>
+              <span class="dteam-name">${t}</span>
+              <span class="dteam-wins"></span>
+            </div>`).join('')
+        : '';
+
+      return `<div class="dcard au" style="animation-delay:${i*.055}s">
+        <div class="dcard-accent" style="background:linear-gradient(90deg,${color},transparent)"></div>
+        <div class="dcard-hdr">
+          <div class="dcard-hdr-left">
+            <div style="display:flex;align-items:center;gap:5px;">
+              <span class="dcard-name" style="color:${color}">${p.name}</span>
+              ${renderRings(p.rings)}
+              ${p.isChamp?'<span style="font-size:.7rem;color:var(--gold);margin-left:2px">🏆</span>':''}
+            </div>
+            <div class="dcard-career">${p.wins} pts · ${activeYear} season</div>
+          </div>
+          <div class="dcard-hdr-right">
+            <div class="dcard-score" style="color:${color}">${p.wins}</div>
+          </div>
+        </div>
+        <div class="dcard-teams">${aliveSection}${elimSection}</div>
+      </div>`;
+    }).join('');
+    return;
+  }
+
+  // ── Live 2026 view ────────────────────────────────────────
   const players = Object.entries(DRAFT).map(([name,d]) => ({
     name, wins:getPlayerWins(name), rings:d.rings, ci:d.ci,
     teams:d.teams, career:getCareerPts(name)
