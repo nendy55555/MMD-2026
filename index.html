@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bracket Boyz — March Madness 2026</title>
+<title>Bracket Boyz &mdash; March Madness 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -156,22 +156,16 @@ a{color:var(--blue);text-decoration:none;}
   margin:-10px -12px 8px -12px;
   text-shadow:none;
 }
-/* Historic Numbers Watch banner (Andrew) */
-.hist-numbers-banner{
-  background:linear-gradient(90deg,#064e1e,#16a34a,#064e1e);
-  color:#d1fae5;font-size:.56rem;font-weight:900;text-transform:uppercase;
-  letter-spacing:.12em;text-align:center;padding:4px 12px;
+/* Winner Winner Chicken Dinner banner (Andrew) */
+.winner-banner{
+  background:linear-gradient(90deg,#7c2d12,#d97706,#fbbf24,#d97706,#7c2d12);
+  color:#fff;font-size:.62rem;font-weight:900;text-transform:uppercase;
+  letter-spacing:.14em;text-align:center;padding:6px 12px;
   grid-column:1/-1;margin:-11px -16px 4px -16px;border-radius:10px 10px 0 0;
-  text-shadow:0 1px 3px rgba(0,0,0,.4);
+  text-shadow:0 1px 4px rgba(0,0,0,.5);
+  animation:winner-glow 1.5s ease-in-out infinite;
 }
-/* Pikachu reaction image next to Andrew's score */
-.andrew-pika{
-  width:46px;height:46px;border-radius:50%;object-fit:cover;
-  box-shadow:0 0 12px rgba(34,197,94,.4);
-  animation:pikaFloat 2s ease-in-out infinite;
-  z-index:10;
-}
-@keyframes pikaFloat{0%,100%{transform:translateY(-50%) rotate(-3deg);}50%{transform:translateY(calc(-50% - 4px)) rotate(3deg);}}
+@keyframes winner-glow{0%,100%{filter:brightness(1);}50%{filter:brightness(1.2);}}
 .lbrow .calling-it-banner{
   grid-column:1/-1;margin:-11px -16px 4px -16px;border-radius:10px 10px 0 0;
 }
@@ -751,31 +745,23 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
     <line class="bl" x1="1412" y1="152" x2="1412" y2="174"/>
   </svg>
   <div class="hdr-inner">
-    <div class="hdr-imgs-left">
-      <img class="hdr-side-img" src="cleveland.jpg" alt="Cleveland">
-      <img class="hdr-side-img" src="throne.png" alt="">
-    </div>
-    <div class="hdr-center">
+    <div class="hdr-center" style="grid-column:1/-1">
       <div class="hdr-icon">🏀</div>
       <h1>BRACKET BOYZ</h1>
       <div class="hdr-sub">March Madness Snake Draft Tracker</div>
       <div class="hdr-badges">
         <span class="badge gold">2026 NCAA Tournament</span>
-        <span class="badge">8 Players · Snake Draft</span>
+        <span class="badge">8 Players &middot; Snake Draft</span>
       </div>
-    </div>
-    <div class="hdr-imgs-right">
-      <img class="hdr-side-img" src="poolboy.png" alt="">
-      <img class="hdr-side-img" src="shaman.jpg" alt="Shaman">
     </div>
   </div>
 </div>
 
 <div class="sbar">
   <span><span class="sdot loading" id="sDot"></span><span id="sText">Loading...</span></span>
-  <span id="sUpdate" style="opacity:.65">—</span>
-  <span id="sGames" style="opacity:.65">—</span>
-  <button class="rbtn" id="rBtn" onclick="forceRefresh()">↻ Refresh</button>
+  <span id="sUpdate" style="opacity:.65">&mdash;</span>
+  <span id="sGames" style="opacity:.65">&mdash;</span>
+  <button class="rbtn" id="rBtn" onclick="forceRefresh()">&#8635; Refresh</button>
 </div>
 
 
@@ -788,7 +774,7 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
   <div class="ticker reveal" id="ticker" style="display:none">
     <div class="ticker-hdr">
       <div class="ticker-title">🏟️ Tournament Games</div>
-      <div class="ticker-rlabel" id="tickerRound">—</div>
+      <div class="ticker-rlabel" id="tickerRound">&mdash;</div>
     </div>
     <div class="ticker-scroll" id="tickerScroll"></div>
   </div>
@@ -826,14 +812,14 @@ table.dt tbody tr:hover td{background:rgba(255,255,255,.015);}
 </div>
 
 <div id="mockBanner" style="display:none;background:linear-gradient(90deg,#1a0f38,#2d1b6b,#1a0f38);border-top:1px solid rgba(167,139,250,.25);border-bottom:1px solid rgba(167,139,250,.25);padding:10px 20px;text-align:center;font-size:.82rem;color:#c4b5fd;letter-spacing:.03em;">
-  🔮 <strong style="color:#a78bfa">MOCK DATA MODE</strong> — This is simulated Round of 32 data for preview &amp; testing.
+  🔮 <strong style="color:#a78bfa">MOCK DATA MODE</strong> &mdash; This is simulated Round of 32 data for preview &amp; testing.
   To use live ESPN data, set <code style="background:rgba(167,139,250,.15);border-radius:3px;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:.78rem">MOCK_MODE = false</code> in the script.
 </div>
 
 <div class="footer">
-  Bracket Boyz © 2026 · Live data via <a href="https://www.espn.com" target="_blank">ESPN API</a> · Updates every 60s during games · 7am–midnight PT auto-refresh
+  Bracket Boyz &copy; 2026 &middot; Live data via <a href="https://www.espn.com" target="_blank">ESPN API</a> &middot; Updates every 60s during games &middot; 7am&ndash;midnight PT auto-refresh
   <br style="margin-top:6px">
-  <span style="opacity:.6">Free hosting: <a href="https://pages.github.com" target="_blank">GitHub Pages</a> · <a href="https://netlify.com/drop" target="_blank">Netlify Drop</a> · <a href="https://vercel.com" target="_blank">Vercel</a></span>
+  <span style="opacity:.6">Free hosting: <a href="https://pages.github.com" target="_blank">GitHub Pages</a> &middot; <a href="https://netlify.com/drop" target="_blank">Netlify Drop</a> &middot; <a href="https://vercel.com" target="_blank">Vercel</a></span>
 </div>
 
 <script>
@@ -855,7 +841,7 @@ const DRAFT = {
   Rudger:  { teams:['Florida','Gonzaga','Texas Tech','Saint Louis','Utah State','TCU','Queens','Idaho'],                  picks:[3,14,22,27,38,43,54,59], rings:0, ci:2 },
   Harrison:{ teams:['Arizona','Virginia','BYU','North Carolina','Clemson','UCF','Penn','LIU'],                            picks:[4,13,21,28,37,44,53,60], rings:0, ci:3 },
   Gabe:    { teams:['UConn','Michigan State','Wisconsin','Miami (FL)','Georgia','Akron','Hawaii','Tennessee St.'],         picks:[5,12,20,29,36,45,52,61], rings:0, ci:4 },
-  Andrew:  { teams:['Houston','Arkansas','Tennessee','Iowa','Texas','McNeese State','Northern Iowa','Howard'],             picks:[6,11,19,30,35,46,51,62], rings:0, ci:5 },
+  Andrew:  { teams:['Houston','Arkansas','Tennessee','Iowa','Texas','McNeese State','Northern Iowa','Howard'],             picks:[6,11,19,30,35,46,51,62], rings:1, ci:5 },
   Thomas:  { teams:['Purdue','Vanderbilt','Kansas','VCU','Miami (OH)','Hofstra','Troy','Siena'],                          picks:[7,10,18,31,34,47,50,63], rings:0, ci:6 },
   Carson:  { teams:['Iowa State','Illinois','Alabama','Texas A&M','USF','Cal Baptist','High Point','Prairie View A&M'],   picks:[8,9,17,32,33,48,49,64],  rings:0, ci:7 }
 };
@@ -898,7 +884,13 @@ const HISTORICAL = {
 };
 
 let activeYear = 2026;
-const CHAMPS = {2024:'Pedraam',2025:'Pedraam'};
+const CHAMPS = {2024:'Pedraam',2025:'Pedraam',2026:'Andrew'};
+
+// ── OFFSEASON MODE ────────────────────────────────────────────
+// Set to true between tournaments. Disables live refresh, hides the games
+// ticker, and shows a static "season complete" status.
+// Flip to false when the next year's tournament tips off.
+const OFFSEASON = true;
 
 // ── MOCK MODE ─────────────────────────────────────────────────
 // Set to false when you're ready to use live ESPN data
@@ -1858,10 +1850,13 @@ function getCurrentRoundIdx() {
 // ── RENDER: TOURNAMENT PROGRESS ───────────────────────────────
 function renderProgress() {
   const el = document.getElementById('tprog');
-  const currentIdx = getCurrentRoundIdx();
 
   // Only show Round of 64 through Championship
   const showRounds = [1,2,3,4,5,6];
+
+  // Offseason: mark every round complete
+  const currentIdx = OFFSEASON ? 99 : getCurrentRoundIdx();
+
   el.innerHTML = showRounds.map(r => {
     const done = r < currentIdx;   // rounds before current are complete
     const now  = r === currentIdx; // current round per schedule
@@ -1878,6 +1873,9 @@ function renderTicker() {
   const ticker = document.getElementById('ticker');
   const scroll = document.getElementById('tickerScroll');
   const rLabel = document.getElementById('tickerRound');
+
+  // Offseason: no games to show
+  if (OFFSEASON) { ticker.style.display = 'none'; return; }
 
   // Gather all relevant main-bracket games
   const mainToday  = todayGames.filter(g => g.isMain);
@@ -1974,7 +1972,7 @@ function renderTicker() {
     // Vegas odds row (show for upcoming + live games)
     let oddsHtml = '';
     if (!isDone && g.oddsLine) {
-      const ouStr = g.oddsOU ? ` · O/U ${g.oddsOU}` : '';
+      const ouStr = g.oddsOU ? ` &middot; O/U ${g.oddsOU}` : '';
       oddsHtml = `<div class="tcard-odds">
         <span>📊</span>
         <span class="tcard-odds-line">${g.oddsLine}</span>
@@ -2018,7 +2016,7 @@ function renderTicker() {
       ${teamRows}
       ${oddsHtml}
       ${wpHtml}
-      <div class="tcard-status ${isLive?'live':''}">${isLive?'● LIVE · ':''}${status}</div>
+      <div class="tcard-status ${isLive?'live':''}">${isLive?'&#9679; LIVE &middot; ':''}${status}</div>
     </div>`;
   }).join('');
 }
@@ -2059,7 +2057,7 @@ function switchYear(year) {
     }
     const champ = HISTORICAL[year].champion;
     const gp = HISTORICAL[year].gamesPlayed;
-    champEl.innerHTML = `🏆 ${year} Champion: <strong>${champ}</strong> &nbsp;·&nbsp; ${gp} games played`;
+    champEl.innerHTML = `🏆 ${year} Champion: <strong>${champ}</strong> &nbsp;&middot;&nbsp; ${gp} games played`;
     champEl.style.display = '';
   } else if (champEl) {
     champEl.style.display = 'none';
@@ -2115,7 +2113,7 @@ function renderLeaderboard() {
         ? `<span class="lb-gap leading">🏆 CHAMP</span>`
         : isLeader
           ? `<span class="lb-gap leading">LEADER</span>`
-          : gapToLeader>0 ? `<span class="lb-gap">–${gapToLeader}</span>` : '';
+          : gapToLeader>0 ? `<span class="lb-gap">&ndash;${gapToLeader}</span>` : '';
 
       const delay = i*0.045;
       return `<div class="lbrow pc${p.ci} ${rankNum===1?'lead':''} au" style="animation-delay:${delay}s">
@@ -2172,33 +2170,27 @@ function renderLeaderboard() {
       </div>`;
     }).join('');
 
-    // Potential tooltip (breakdown)
-    const aliveCount = p.alive;
-    const extraPot = p.potential - p.wins;
-    const potTip = `Max possible: ${p.wins} current + ${aliveCount} alive teams - conflicts = ${p.potential} pts`;
-
-    // Gap to leader badge
+    // Gap to leader (or CHAMP for the 2026 winner)
     const gapToLeader = players[0].wins - p.wins;
     const isLeader    = rankNum === 1 && p.wins > 0;
-    const gapHtml     = isLeader
-      ? `<span class="lb-gap leading">LEADER</span>`
-      : gapToLeader > 0
-        ? `<span class="lb-gap">–${gapToLeader}</span>`
-        : '';
+    const isChamp2026 = p.name === 'Andrew';
+    const gapHtml     = isChamp2026
+      ? `<span class="lb-gap leading">🏆 CHAMP</span>`
+      : isLeader
+        ? `<span class="lb-gap leading">LEADER</span>`
+        : gapToLeader > 0
+          ? `<span class="lb-gap">&ndash;${gapToLeader}</span>`
+          : '';
 
-    const calledIt = !['Andrew','Carson'].includes(p.name);
-    const lbCallingIt = calledIt ? `<div class="calling-it-banner">💀 Calling It 💀</div>` : '';
-    const histBanner  = p.name === 'Andrew' ? `<div class="hist-numbers-banner">📈 Historic Numbers Watch 📈</div>` : '';
+    const histBanner  = p.name === 'Andrew' ? `<div class="winner-banner">🐥 🏆 WINNER WINNER CHICKEN DINNER 🏆 🐥</div>` : '';
     const delay = i*0.045;
     const rowHtml = `<div class="lbrow pc${p.ci} ${rankNum===1&&p.wins>0?'lead':''} au" style="animation-delay:${delay}s">
-      ${lbCallingIt}${histBanner}
+      ${histBanner}
       <div class="lbrank">${rankLabel}</div>
       <div class="lbinfo">
         <div class="lbname-row">
           <span class="lbname">${p.name}</span>
           ${renderRings(p.rings)}
-          <span class="lbalive">${p.alive} alive</span>
-          <span class="lbpot" title="${potTip}">${p.potential} remaining max pf</span>
           ${gapHtml}
         </div>
         <div class="lbballs">${renderBalls(p.wins,maxWins)}</div>
@@ -2206,9 +2198,6 @@ function renderLeaderboard() {
       <div class="team-chips">${chips}</div>
       <div class="lbscore">${p.wins}</div>
     </div>`;
-    if (p.name === 'Andrew') {
-      return `<div style="position:relative;overflow:visible;">${rowHtml}<img class="andrew-pika" src="scared-pika.png" title="😱" style="position:absolute;right:-58px;top:50%;transform:translateY(-50%);"></div>`;
-    }
     return rowHtml;
   }).join('');
 }
@@ -2245,8 +2234,8 @@ function renderSBC() {
     const tiedCount = players.filter(x => x.wins === p.wins).length;
     let pill;
     if (delta === 0 && tiedCount === 1) pill = `<span class="sbc-pill first">1st 🏆</span>`;
-    else if (delta === 0)               pill = `<span class="sbc-pill tied">T–1st</span>`;
-    else                                pill = `<span class="sbc-pill behind">–${Math.abs(delta)}</span>`;
+    else if (delta === 0)               pill = `<span class="sbc-pill tied">T&ndash;1st</span>`;
+    else                                pill = `<span class="sbc-pill behind">&ndash;${Math.abs(delta)}</span>`;
 
     let barInner = '';
     if (segs.length > 0) {
@@ -2347,7 +2336,7 @@ function renderDraftCards() {
         const logoImg = logo
           ? `<img class="dteam-logo" src="${logo}" loading="lazy" onerror="this.style.display='none'">`
           : '<div class="dteam-logo" style="opacity:0.2;background:#333;border-radius:3px"></div>';
-        const pickBadge = `<span class="dteam-pick">· Pick #${pickNum}</span>`;
+        const pickBadge = `<span class="dteam-pick">&middot; Pick #${pickNum}</span>`;
         return `<div class="dteam-row ${elim?'elim':''}">
           ${logoImg}
           <span class="dteam-name">${t}${pickBadge}</span>
@@ -2364,7 +2353,7 @@ function renderDraftCards() {
               ${renderRings(p.rings)}
               ${p.isChamp?'<span style="font-size:.7rem;color:var(--gold);margin-left:2px">🏆</span>':''}
             </div>
-            <div class="dcard-career">${p.wins} pts · Pick #${p.draftPos} overall · ${activeYear}</div>
+            <div class="dcard-career">${p.wins} pts &middot; Pick #${p.draftPos} overall &middot; ${activeYear}</div>
           </div>
           <div class="dcard-hdr-right">
             <div class="dcard-score" style="color:${color}">${p.wins}</div>
@@ -2401,7 +2390,7 @@ function renderDraftCards() {
       const seedBadge = seed ? `<span class="seed-badge">#${seed}</span>` : '';
       const teamIdx = p.teams.indexOf(t);
       const pickNum = (DRAFT[p.name]?.picks && teamIdx >= 0) ? DRAFT[p.name].picks[teamIdx] : null;
-      const pickBadge = pickNum ? `<span class="dteam-pick">· Pick #${pickNum}</span>` : '';
+      const pickBadge = pickNum ? `<span class="dteam-pick">&middot; Pick #${pickNum}</span>` : '';
 
       let wpHtml = '';
       if (live && wp !== null) {
@@ -2464,13 +2453,13 @@ function renderHistTable() {
   const top = rows[0]?.career||0;
 
   tbody.innerHTML = rows.map((r,i)=>{
-    const is24 = CHAMPS[2024]===r.name, is25 = CHAMPS[2025]===r.name;
+    const is24 = CHAMPS[2024]===r.name, is25 = CHAMPS[2025]===r.name, is26 = CHAMPS[2026]===r.name;
     return `<tr>
       <td class="trank">${i+1}</td>
       <td style="font-weight:700">${r.name} ${renderRings(DRAFT[r.name].rings)}</td>
       <td class="${is24?'ywinner':''}">${is24?'🏆 ':''}${r.h[2024]||0}</td>
       <td class="${is25?'ywinner':''}">${is25?'🏆 ':''}${r.h[2025]||0}</td>
-      <td class="tpts">${r.cur}</td>
+      <td class="tpts ${is26?'ywinner':''}">${is26?'🏆 ':''}${r.cur}</td>
       <td class="tpts ${r.career===top&&top>0?'career-top':''}">${r.career}</td>
     </tr>`;
   }).join('');
@@ -2481,8 +2470,18 @@ function updateStatus(hasLive) {
   const txt = document.getElementById('sText');
   const upd = document.getElementById('sUpdate');
   const gp = document.getElementById('sGames');
-  const liveCount = todayGames.filter(g=>LIVE_STATUSES.has(g.status)).length;
 
+  if (OFFSEASON) {
+    dot.className = 'sdot idle';
+    txt.textContent = `2026 Season Complete \u2014 Champion: ${CHAMPS[2026]}`;
+    upd.textContent = 'See you next March';
+    gp.textContent = '';
+    const rBtn = document.getElementById('rBtn');
+    if (rBtn) rBtn.style.display = 'none';
+    return;
+  }
+
+  const liveCount = todayGames.filter(g=>LIVE_STATUSES.has(g.status)).length;
   dot.className = `sdot ${hasLive?'live':'idle'}`;
   txt.textContent = hasLive ? `${liveCount} game${liveCount!==1?'s':''} live` :
     (totalCompleted > 0 ? ROUND_NAMES[getCurrentRoundIdx()] : 'Waiting for tip-off');
@@ -2497,7 +2496,7 @@ async function forceRefresh() {
   refreshing = true;
   const btn = document.getElementById('rBtn');
   const dot = document.getElementById('sDot');
-  btn.disabled = true; btn.textContent = '⟳ Loading...';
+  btn.disabled = true; btn.textContent = '\u27F3 Loading...';
   dot.className = 'sdot loading';
 
   try {
@@ -2512,15 +2511,17 @@ async function forceRefresh() {
     updateStatus(hasLive);
   } catch(e) {
     console.error(e);
-    document.getElementById('sText').textContent = 'Error — try refreshing';
+    if (OFFSEASON) updateStatus(false);
+    else document.getElementById('sText').textContent = 'Error \u2014 try refreshing';
   }
-  btn.disabled=false; btn.textContent='↻ Refresh';
+  btn.disabled=false; btn.textContent='\u21BB Refresh';
   refreshing = false;
 }
 
 // ── AUTO-REFRESH ──────────────────────────────────────────────
 // 60s if games are live, 120s otherwise, off during 12am-7am PT
 function scheduleRefresh() {
+  if (OFFSEASON) return; // No live games between tournaments
   const ptHour = parseInt(new Date().toLocaleString('en-US',{timeZone:'America/Los_Angeles',hour:'numeric',hour12:false}));
   if (ptHour < 7 || ptHour >= 24) return; // Sleep overnight
   const hasLive = todayGames.some(g=>LIVE_STATUSES.has(g.status));
